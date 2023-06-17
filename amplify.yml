@@ -1,0 +1,20 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - cd server
+        - amplify push --yes
+  frontend:
+    phases:
+      preBuild:
+        commands:
+          - cd client
+      build:
+        commands:
+          - npm ci
+      artifacts:
+        baseDirectory: client/build
+        files:
+          - '**/*'
+  appRoot: .
