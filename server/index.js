@@ -8,7 +8,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = socketIO(server);
 const PORT = 3001;
-
+io.origins('*:*');
 
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
