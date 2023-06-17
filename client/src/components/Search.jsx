@@ -38,7 +38,7 @@ export default function Search({ socket }) {
     };
 
     const addToPlaylist = (video) => {
-        socket.emit('addToPlaylist', { video: video });
+        socket.send(JSON.stringify({ message: "addToPlaylist", video: video }))
     }
 
     return (
