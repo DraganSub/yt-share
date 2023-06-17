@@ -36,9 +36,9 @@ io.on('connection', (socket) => {
     io.to(data.room).emit('seekVideo', data);
   });
 
-  socket.on('disconnect', () => {
-    console.log(`Client disconnected: ${socket.id}`);
-  });
+  /*  socket.on('disconnect', () => {
+     console.log(`Client disconnected: ${socket.id}`);
+   }); */
 });
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
