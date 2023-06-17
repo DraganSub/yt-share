@@ -6,9 +6,15 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+  },
+});
 const PORT = 3001;
-io.origins('*:*');
+
 
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
