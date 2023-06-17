@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { VideoCard } from ".";
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
-export default function Search() {
+export default function Search({ socket }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [videos, setVideos] = useState([]);
 
@@ -36,6 +37,10 @@ export default function Search() {
         }
     };
 
+    const addToPlaylist = (video) => {
+        socket.emit('addToPlaylist', { video: video });
+    }
+
     return (
         <div>
             <h1>YouTube Video Search</h1>
@@ -45,17 +50,7 @@ export default function Search() {
             </form>
             <div>
                 {videos.map((video) => (
-                    <div key={video.id.videoId}>
-                        <h2>{video.snippet.title}</h2>
-                        <iframe
-                            width="560"
-                            height="315"
-                            src={`https://www.youtube.com/embed/${video.id.videoId}`}
-                            title={video.snippet.title}
-                            frameBorder="0"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
+                    <VideoCard video={video} method={addToPlaylist} />
                 ))}
             </div>
         </div>

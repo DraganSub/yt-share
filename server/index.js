@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
 
   socket.on('playVideo', (data) => {
     io.to(data.room).emit('playVideo', data);
+    console.log("played")
   });
 
   socket.on('pauseVideo', (data) => {
@@ -38,6 +39,10 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log(`Client disconnected: ${socket.id}`);
+  });
+
+  socket.on("addToPlaylist", () => {
+    console.log("added new video to playlist")
   });
 });
 server.listen(PORT, () => {

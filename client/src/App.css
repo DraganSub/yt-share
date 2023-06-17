@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+}
+
+.addToPlaylistButton {
+    position: absolute;
+    margin-left: -225px;
+    margin-top: 80px;
+    width: 50px;
+    height: 30px;
+}
+
+.videoResultCard {
+    position: relative;
+}

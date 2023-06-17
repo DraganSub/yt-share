@@ -1,45 +1,57 @@
-import io from "socket.io-client";
+
 import Youtube from "react-youtube";
 import React, { useEffect, useState } from "react";
 
-const socket = io('https://yt-share-server.vercel.app');
 
-export default function Player() {
+export default function Player({ socket }) {
     const [playerState, setPlayerState] = useState(-1);
     const [playerTime, setPlayerTime] = useState(0);
 
+
     useEffect(() => {
-        socket.on('playVideo', (data) => {
-            setPlayerState(1);
-            setPlayerTime(data.time);
-        });
+        socket.onmessage = (event) => {
+            console.log(event)
+            const data = JSON.parse(event.data);
+            if (data.message === "playVideo") {
+                setPlayerState(1);
+                setPlayerTime(data.time);
+            }
+        }
+        // socket.on('playVideo', (data) => {
+        //     setPlayerState(1);
+        //     setPlayerTime(data.time);
+        // });
 
-        socket.on('pauseVideo', (data) => {
-            setPlayerState(2);
-            setPlayerTime(data.time);
-        });
+        // socket.on('pauseVideo', (data) => {
+        //     setPlayerState(2);
+        //     setPlayerTime(data.time);
+        // });
 
-        socket.on('seekVideo', (data) => {
-            setPlayerState(1);
-            setPlayerTime(data.time);
-        });
+        // socket.on('seekVideo', (data) => {
+        //     setPlayerState(1);
+        //     setPlayerTime(data.time);
+        // });
 
-        return () => {
-            socket.off('playVideo');
-            socket.off('pauseVideo');
-            socket.off('seekVideo');
-        };
+        // return () => {
+        //     socket.off('playVideo');
+        //     socket.off('pauseVideo');
+        //     socket.off('seekVideo');
+        // };
+
     }, []);
 
     const handlePlayerStateChange = (event) => {
         const { target } = event;
         const { currentTime, playerState: state } = target;
         setPlayerTime(currentTime);
+        console.log(event)
 
-        if (state === 1) {
-            socket.emit('playVideo', { time: currentTime });
-        } else if (state === 2) {
-            socket.emit('pauseVideo', { time: currentTime });
+        if (event.data === 1) {
+            // socket.emit('playVideo', { time: currentTime });
+            socket.send(JSON.stringify({ message: "playVideo", time: playerTime }))
+        } else if (event.data === 2) {
+            socket.send(JSON.stringify({ message: "stopVideo", time: currentTime }))
+            // socket.emit('pauseVideo', { time: currentTime });
         }
     };
 
@@ -56,6 +68,7 @@ export default function Player() {
         width: '640',
         playerVars: {
             autoplay: 1,
+            start: playerTime
         },
     };
 
@@ -66,7 +79,7 @@ export default function Player() {
                 videoId="jEzUuwqf_ZU"
                 opts={opts}
                 onStateChange={handlePlayerStateChange}
-                onSeek={handlePlayerSeek}
+            //onSeek={handlePlayerSeek}
             />
             <p>Current Time: {playerTime}</p>
         </div>
