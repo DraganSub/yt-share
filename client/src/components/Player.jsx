@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import Youtube from "react-youtube";
 import React, { useEffect, useState } from "react";
 
-const socket = io('http://localhost:3001');
+const socket = io('https://yt-share-server.vercel.app:3001');
 
 export default function Player() {
     const [playerState, setPlayerState] = useState(-1);
@@ -63,7 +63,7 @@ export default function Player() {
         <div className="App">
             <h1>YouTube Sync</h1>
             <Youtube
-                videoId="YOUR_VIDEO_ID"
+                videoId="jEzUuwqf_ZU"
                 opts={opts}
                 onStateChange={handlePlayerStateChange}
                 onSeek={handlePlayerSeek}
