@@ -1,87 +1,92 @@
 
 import Youtube from "react-youtube";
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
+import ReactPlayer from 'react-player'
 
 
 export default function Player({ socket }) {
     const [playerState, setPlayerState] = useState(-1);
     const [playerTime, setPlayerTime] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [playable, setPlayable] = useState(false);
+    const [videoStatus, setVideoStatus] = useState(true)
+    const [seekTime, setSeekTime] = useState(0);
+    const [muted, setIsMuted] = useState(true);
+
+    const player = useRef(null);
 
 
     useEffect(() => {
         socket.onmessage = (event) => {
             console.log(event)
             const data = JSON.parse(event.data);
-            if (data.message === "playVideo") {
-                setPlayerState(1);
-                setPlayerTime(data.time);
+            setPlayable(false);
+            if (data.message === "play") {
+                setVideoStatus(true);
+                console.log("play locally video")
+            }
+            else if (data.message === "stop") {
+                console.log("stop locally video")
+                setVideoStatus(false);
+            } else if (data.message === "currentTime") {
+                console.log("currentTimeOfVide", data.currentTime);
+                setSeekTime(data.currentTime)
+                player.current.seekTo(data.currentTime);
             }
         }
-        // socket.on('playVideo', (data) => {
-        //     setPlayerState(1);
-        //     setPlayerTime(data.time);
-        // });
-
-        // socket.on('pauseVideo', (data) => {
-        //     setPlayerState(2);
-        //     setPlayerTime(data.time);
-        // });
-
-        // socket.on('seekVideo', (data) => {
-        //     setPlayerState(1);
-        //     setPlayerTime(data.time);
-        // });
-
-        // return () => {
-        //     socket.off('playVideo');
-        //     socket.off('pauseVideo');
-        //     socket.off('seekVideo');
-        // };
-
     }, []);
 
-    const handlePlayerStateChange = (event) => {
-        const { target } = event;
-        const { currentTime, playerState: state } = target;
-        setPlayerTime(currentTime);
-        console.log(event)
+    const onPlay = () => {
 
-        if (event.data === 1) {
-            // socket.emit('playVideo', { time: currentTime });
-            socket.send(JSON.stringify({ message: "playVideo", time: playerTime }))
-        } else if (event.data === 2) {
-            socket.send(JSON.stringify({ message: "stopVideo", time: currentTime }))
-            // socket.emit('pauseVideo', { time: currentTime });
-        }
-    };
+        console.log("msg to play")
+        socket.send(JSON.stringify({ message: "playVideo" }))
 
-    const handlePlayerSeek = (event) => {
-        const { target } = event;
-        const { currentTime } = target;
-        setPlayerTime(currentTime);
+    }
 
-        socket.emit('seekVideo', { time: currentTime });
-    };
+    const onPause = () => {
 
-    const opts = {
-        height: '360',
-        width: '640',
-        playerVars: {
-            autoplay: 1,
-            start: playerTime
-        },
-    };
+
+        console.log("msg to stop")
+        socket.send(JSON.stringify({ message: "stopVideo" }))
+
+    }
+
+    const handleSeek = (seconds) => {
+        console.log(seconds);
+        socket.send(JSON.stringify({ message: "seekSeconds", currentTime: seconds.playedSeconds }))
+    }
+
+    // if (seekTime == 0) {
+    //     return null;
+    // }
 
     return (
         <div className="App">
             <h1>YouTube Sync</h1>
-            <Youtube
-                videoId="jEzUuwqf_ZU"
-                opts={opts}
-                onStateChange={handlePlayerStateChange}
-            //onSeek={handlePlayerSeek}
+            <ReactPlayer
+                playing={videoStatus}
+                controls={true}
+                url={"https://www.youtube.com/watch?v=jEzUuwqf_ZU"}
+                onPause={onPause}
+                onPlay={onPlay}
+                onProgress={handleSeek}
+                seconds
+                config={{
+                    youtube: {
+                        playerVars: {
+                            start: seekTime
+
+                        }
+                    }
+                }}
+                muted={true}
+                ref={player}
             />
-            <p>Current Time: {playerTime}</p>
+
+            <button onClick={onPlay}>PLAY</button>
+            <button onClick={onPause}>STOP</button>
+            <p>Current Time: {seekTime}</p>
         </div>
     );
 };

@@ -5,6 +5,8 @@ const socketServer = new WebSocketServer({ port: 443 })
 const app = express()
 const port = 3001;
 
+let currentTime = 0;
+
 app.listen(port, () => {
     console.log(`player listening on port ${port}`)
 })
@@ -14,6 +16,11 @@ socketServer.on("connection", ws => {
     ws.send(JSON.stringify({
         message: "connection-established"
     }));
+    console.log("current currentTime", currentTime)
+    ws.send(JSON.stringify({
+        message: "currentTime",
+        currentTime: currentTime
+    }))
 
     ws.on("message", (event) => {
         console.log("message come", JSON.parse(event))
@@ -23,11 +30,23 @@ socketServer.on("connection", ws => {
             socketServer.clients.forEach(client => {
                 client.send(
                     JSON.stringify({
-                        message: "playVideo",
-                        time: data.time
+                        message: "play",
                     })
                 )
             })
+        } else if (data.message === "stopVideo") {
+            socketServer.clients.forEach(client => {
+                client.send(
+                    JSON.stringify({
+                        message: "stop",
+                    })
+                )
+            })
+        } else if (data.message === "seekSeconds") {
+            if (currentTime < data.currentTime) {
+                console.log("reset currenttime to bigger value")
+                currentTime = data.currentTime;
+            }
         }
 
     })
