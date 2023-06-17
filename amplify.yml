@@ -3,27 +3,25 @@ frontend:
   phases:
     build:
       commands:
-        - cd client
-        - npm install
-        - npm run build
+        - npm --prefix ./client install ./client
+        - npm --prefix ./client run build
   artifacts:
     baseDirectory: client/build
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
+      - client/node_modules/**/*
 
 backend:
   phases:
     build:
       commands:
-        - cd server
-        - npm install
+        - npm --prefix ./server install ./server
   artifacts:
     baseDirectory: server
     files:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*
+      - server/node_modules/**/*
