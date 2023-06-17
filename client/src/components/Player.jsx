@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import Youtube from "react-youtube";
 import React, { useEffect, useState } from "react";
 
-const socket = io('https://yt-share-server.vercel.app');
+const socket = io('https://yt-share-server.vercel.app/');
 
 export default function Player() {
     const [playerState, setPlayerState] = useState(-1);
