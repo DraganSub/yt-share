@@ -1,10 +1,10 @@
-import io from "socket.io-client";
-import Youtube from "react-youtube";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import YouTube from 'react-youtube';
+import io from 'socket.io-client';
 
-const socket = io('https://yt-share-server.vercel.app/');
+const socket = io('https://yt-share-server.vercel.app', { path: '/socket.io' });
 
-export default function Player() {
+const Player = () => {
     const [playerState, setPlayerState] = useState(-1);
     const [playerTime, setPlayerTime] = useState(0);
 
@@ -62,8 +62,8 @@ export default function Player() {
     return (
         <div className="App">
             <h1>YouTube Sync</h1>
-            <Youtube
-                videoId="jEzUuwqf_ZU"
+            <YouTube
+                videoId="YOUR_VIDEO_ID"
                 opts={opts}
                 onStateChange={handlePlayerStateChange}
                 onSeek={handlePlayerSeek}
@@ -72,3 +72,5 @@ export default function Player() {
         </div>
     );
 };
+
+export default Player;
