@@ -12,7 +12,9 @@ backend:
           - cd client
       build:
         commands:
+          - cd client
           - npm ci
+          - npm run build
       artifacts:
         baseDirectory: client/build
         files:
