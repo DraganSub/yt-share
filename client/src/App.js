@@ -5,7 +5,8 @@ import "./App.css";
 function App() {
 
   //const socket = io('https://yt-share-server.vercel.app');
-  const socket = new WebSocket("ws://localhost:443");
+  //const socket = new WebSocket("ws://localhost:443");
+  const socket = new WebSocket("wss://yt-share-server.vercel.app:443");
   return (
     <div className="container">
       <Player socket={socket} />
