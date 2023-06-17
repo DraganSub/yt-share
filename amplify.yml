@@ -1,22 +1,31 @@
 version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd client
+        - npm install
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: client/build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+
 backend:
   phases:
     build:
       commands:
         - cd server
-        - amplify push --yes
-  frontend:
-    phases:
-      preBuild:
-        commands:
-          - cd client
-      build:
-        commands:
-          - cd client
-          - npm ci
-          - npm run build
-      artifacts:
-        baseDirectory: client/build
-        files:
-          - '**/*'
-  appRoot: .
+        - npm install
+  artifacts:
+    baseDirectory: server
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
