@@ -6,7 +6,7 @@ function App() {
 
   //const socket = io('https://yt-share-server.vercel.app');
   //const socket = new WebSocket("ws://localhost:443");
-  const socket = new WebSocket("wss://main.drt1zwpnxk3xb.amplifyapp.com:8080");
+  const socket = new WebSocket("ws://main.drt1zwpnxk3xb.amplifyapp.com");
   return (
     <div className="container">
       <Player socket={socket} />
