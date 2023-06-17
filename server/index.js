@@ -19,11 +19,6 @@ const PORT = 3001;
 io.on('connection', (socket) => {
   console.log(`New client connected: ${socket.id}`);
 
-  socket.on('joinRoom', (room) => {
-    socket.join(room);
-    console.log(`Client ${socket.id} joined room ${room}`);
-  });
-
   socket.on('playVideo', (data) => {
     io.to(data.room).emit('playVideo', data);
   });
@@ -35,10 +30,6 @@ io.on('connection', (socket) => {
   socket.on('seekVideo', (data) => {
     io.to(data.room).emit('seekVideo', data);
   });
-
-  /*  socket.on('disconnect', () => {
-     console.log(`Client disconnected: ${socket.id}`);
-   }); */
 });
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
