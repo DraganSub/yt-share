@@ -3,12 +3,12 @@ const { WebSocketServer } = require("ws")
 const cors = require('cors');
 
 const socketServer = new WebSocketServer({ port: 8080 })
-/* const app = express()
+const app = express()
 const port = 3001;
-app.use(cors()) */
-/* app.listen(port, () => {
+app.use(cors())
+app.listen(port, () => {
   console.log(`player listening on port ${port}`)
-}) */
+})
 let currentTime = 0;
 
 socketServer.on("connection", ws => {
