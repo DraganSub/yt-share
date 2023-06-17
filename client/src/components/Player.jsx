@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import io from 'socket.io-client';
 
-const socket = io('https://yt-share-server.vercel.app', { path: '/socket.io' });
 
 const Player = () => {
+    const socket = io('https://yt-share-server.vercel.app', { path: '/socket.io' });
     const [playerState, setPlayerState] = useState(-1);
     const [playerTime, setPlayerTime] = useState(0);
 

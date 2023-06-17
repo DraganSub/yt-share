@@ -25,9 +25,9 @@ io.on('connection', (socket) => {
     io.emit('seekVideo', data);
   });
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id);
-  });
+  /*  socket.on('disconnect', () => {
+     console.log('Client disconnected:', socket.id);
+   }); */
 });
 
 // Start the server
