@@ -1,13 +1,12 @@
 const express = require('express')
 const { WebSocketServer } = require("ws")
 const cors = require('cors');
-
-const socketServer = new WebSocketServer({ port: 8080 })
+require('dotenv').config()
+const socketServer = new WebSocketServer({ port: 443 })
 const app = express()
-const port = 3001;
 app.use(cors())
 app.listen(port, () => {
-  console.log(`player listening on port ${port}`)
+    console.log(`player listening on port ${process.env.PORT}`)
 })
 let currentTime = 0;
 let playList = [];
@@ -125,9 +124,9 @@ socketServer.on("connection", ws => {
             }
         }
 
-  })
+    })
 
-  ws.on("close", () => console.log("client disconnected"));
+    ws.on("close", () => console.log("client disconnected"));
 
 
 })

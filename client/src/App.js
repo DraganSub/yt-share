@@ -9,8 +9,9 @@ function App() {
   const [listofPlay, setListOfPlay] = useState([]);
 
   //const socket = io('https://yt-share-server.vercel.app');
-  const socket = useMemo(() => new WebSocket("wss://main.drt1zwpnxk3xb.amplifyapp.com/"), []);
-
+  // wss://main.drt1zwpnxk3xb.amplifyapp.com/
+  /*   const socket = useMemo(() => new WebSocket("ws://192.168.1.195:443"), []); */
+  const socket = new WebSocket("ws://watery-husky-measure.glitch.me:443");
   useEffect(() => {
     socket.onmessage = (event) => {
       console.log(event)
