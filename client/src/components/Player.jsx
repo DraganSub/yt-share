@@ -8,15 +8,22 @@ import ReactPlayer from 'react-player'
 export default function Player({ socket, videoStatus, videoId, seekTime }) {
     const player = useRef(null);
 
-    const onPlay = () => {
+    useEffect(() => {
+        if (videoId && player != null && player.current && player.current.seekTo) {
+            //player.current.seekTo(seekTime);
+        }
+    }, [seekTime, videoId, player])
 
+    const onPlay = () => {
+        // if(seekTime != )
+        // player.current.seekTo(seekTime);
         console.log("msg to play")
         socket.send(JSON.stringify({ message: "playVideo" }))
 
     }
 
-    const onPause = () => {
-
+    const onPause = (event) => {
+        console.log(event)
 
         console.log("msg to stop")
         socket.send(JSON.stringify({ message: "stopVideo" }))
@@ -37,6 +44,10 @@ export default function Player({ socket, videoStatus, videoId, seekTime }) {
         socket.send(JSON.stringify({ message: "onYoutubeError", videoId: videoId }));
     }
 
+    const handleStart = () => {
+        player.current.seekTo(seekTime);
+    }
+
     if (videoId == null) {
         return <div>No video queried yet</div>
     }
@@ -54,14 +65,15 @@ export default function Player({ socket, videoStatus, videoId, seekTime }) {
                 seconds
                 onEnded={handleEnd}
                 onError={handleError}
-                config={{
-                    youtube: {
-                        playerVars: {
-                            start: seekTime
+                onReady={handleStart}
+                // config={{
+                //     youtube: {
+                //         playerVars: {
+                //             start: seekTime
 
-                        }
-                    }
-                }}
+                //         }
+                //     }
+                // }}
                 muted={true}
                 ref={player}
             />

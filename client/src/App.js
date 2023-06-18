@@ -40,7 +40,7 @@ function App() {
   // const socket = new WebSocket("wss://yt-share-server.vercel.app:443");
   return (
     <div className="container">
-      <Player socket={socket} videoStatus={videoStatus} videoId={videoId} seekTime={0} />
+      <Player socket={socket} videoStatus={videoStatus} videoId={videoId} seekTime={seekTime} />
       <Playlist socket={socket} listofPlay={listofPlay} videoId={videoId} />
       <Search socket={socket} />
     </div>

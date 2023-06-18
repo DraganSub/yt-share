@@ -68,6 +68,7 @@ socketServer.on("connection", ws => {
             })
         } else if (data.message === "playSpecificVideo") {
             specificVideo = data.video.id.videoId;
+            currentTime = 0;
             socketServer.clients.forEach(client => {
                 console.log(JSON.stringify({
                     message: "playSpecificVideoInPlayer",
@@ -88,6 +89,7 @@ socketServer.on("connection", ws => {
                 } else {
                     specificVideo = playList[0].video.id.videoId;
                 }
+                currentTime = 0;
                 socketServer.clients.forEach(client => {
                     client.send(JSON.stringify({
                         message: "playSpecificVideoInPlayer",
@@ -106,6 +108,7 @@ socketServer.on("connection", ws => {
             const index = playList.findIndex(item => item.video.id.videoId === data.videoId);
             console.log(index)
             if (index !== null || index !== undefined) {
+                currentTime = 0;
                 console.log(playList.length)
                 if (playList.length > index + 1) {
                     specificVideo = playList[index + 1].video.id.videoId;
