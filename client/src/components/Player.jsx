@@ -5,47 +5,25 @@ import { useRef } from "react";
 import ReactPlayer from 'react-player'
 
 
-export default function Player({ socket }) {
-    const [playerState, setPlayerState] = useState(-1);
-    const [playerTime, setPlayerTime] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [playable, setPlayable] = useState(false);
-    const [videoStatus, setVideoStatus] = useState(true)
-    const [seekTime, setSeekTime] = useState(0);
-    const [muted, setIsMuted] = useState(true);
-
+export default function Player({ socket, videoStatus, videoId, seekTime }) {
     const player = useRef(null);
 
-
     useEffect(() => {
-        socket.onmessage = (event) => {
-            console.log(event)
-            const data = JSON.parse(event.data);
-            setPlayable(false);
-            if (data.message === "play") {
-                setVideoStatus(true);
-                console.log("play locally video")
-            }
-            else if (data.message === "stop") {
-                console.log("stop locally video")
-                setVideoStatus(false);
-            } else if (data.message === "currentTime") {
-                console.log("currentTimeOfVide", data.currentTime);
-                setSeekTime(data.currentTime)
-                player.current.seekTo(data.currentTime);
-            }
+        if (videoId && player != null && player.current && player.current.seekTo) {
+            //player.current.seekTo(seekTime);
         }
-    }, []);
+    }, [seekTime, videoId, player])
 
     const onPlay = () => {
-
+        // if(seekTime != )
+        // player.current.seekTo(seekTime);
         console.log("msg to play")
         socket.send(JSON.stringify({ message: "playVideo" }))
 
     }
 
-    const onPause = () => {
-
+    const onPause = (event) => {
+        console.log(event)
 
         console.log("msg to stop")
         socket.send(JSON.stringify({ message: "stopVideo" }))
@@ -57,9 +35,22 @@ export default function Player({ socket }) {
         socket.send(JSON.stringify({ message: "seekSeconds", currentTime: seconds.playedSeconds }))
     }
 
-    // if (seekTime == 0) {
-    //     return null;
-    // }
+    const handleEnd = () => {
+        socket.send(JSON.stringify({ message: "onCurrentVideoEnd", videoId: videoId }));
+    }
+
+    const handleError = (error) => {
+        console.error(error)
+        socket.send(JSON.stringify({ message: "onYoutubeError", videoId: videoId }));
+    }
+
+    const handleStart = () => {
+        player.current.seekTo(seekTime);
+    }
+
+    if (videoId == null) {
+        return <div>No video queried yet</div>
+    }
 
     return (
         <div className="App">
@@ -67,19 +58,22 @@ export default function Player({ socket }) {
             <ReactPlayer
                 playing={videoStatus}
                 controls={true}
-                url={"https://www.youtube.com/watch?v=jEzUuwqf_ZU"}
+                url={`https://www.youtube.com/watch?v=${videoId}`}
                 onPause={onPause}
                 onPlay={onPlay}
                 onProgress={handleSeek}
                 seconds
-                config={{
-                    youtube: {
-                        playerVars: {
-                            start: seekTime
+                onEnded={handleEnd}
+                onError={handleError}
+                onReady={handleStart}
+                // config={{
+                //     youtube: {
+                //         playerVars: {
+                //             start: seekTime
 
-                        }
-                    }
-                }}
+                //         }
+                //     }
+                // }}
                 muted={true}
                 ref={player}
             />
