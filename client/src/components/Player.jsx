@@ -61,6 +61,14 @@ export default function Player({ databaseData }) {
                 onError={handleEnd}
                 onReady={handleStart}
                 muted={isMuted}
+                config={{
+                    youtube: {
+                        playerVars: {
+                            playsinline: 1,
+                            origin: window.location.origin
+                        }
+                    }
+                }}
                 ref={player}
             />
 
