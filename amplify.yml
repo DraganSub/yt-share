@@ -18,10 +18,6 @@ backend:
     build:
       commands:
         - npm --prefix ./server install ./server
-
-    postBuild:
-      commands:
-        - node index.js
   artifacts:
     baseDirectory: server
     files:
