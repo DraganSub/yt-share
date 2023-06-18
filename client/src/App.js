@@ -24,11 +24,12 @@ function App() {
   // console.log(database)
 
   useEffect(() => {
-    // set(ref(database, "youtubeData/"), {
-    //   currentTime: 0,
-    //   playList: ["aaa"],
-    //   specificVideo: "iddd"
-    // })
+    const preventPauseBackgroundTabs = (event) => {
+      event.stopImmediatePropagation(); // Prevent event propagation
+    };
+
+    // Add a fake event listener to block the event
+    window.addEventListener('pausebackgroundtabs', preventPauseBackgroundTabs, true);
 
     const someRef = ref(database, "youtubeData/");
     onValue(someRef, (snapshot) => {
@@ -37,34 +38,6 @@ function App() {
       setDatabaseData(data);
     })
   }, [])
-
-  // useEffect(() => {
-  //   socket.onmessage = (event) => {
-  //     console.log(event)
-  //     const data = JSON.parse(event.data);
-  //     if (data.message === "play") {
-  //       setVideoStatus(true);
-  //       console.log("play locally video")
-  //     }
-  //     else if (data.message === "stop") {
-  //       console.log("stop locally video")
-  //       setVideoStatus(false);
-  //     } else if (data.message === "currentTime") {
-  //       console.log("currentTimeOfVide", data.currentTime);
-  //       // player.current.seekTo(data.currentTime);
-  //       setSeekTime(data.currentTime)
-
-  //     } else if (data.message === "playSpecificVideoInPlayer") {
-  //       console.log("receivied play new video message", data.video)
-  //       setVideoId(data.video);
-  //     } else if (data.message === "newPlaylistEntry" || data.message === "currentPlaylist") {
-  //       setListOfPlay(data.playList);
-  //     } else if (data.message === "currentVideo") {
-  //       setVideoId(data.videoId)
-  //     }
-  //   }
-  // }, [])
-  // const socket = new WebSocket("wss://yt-share-server.vercel.app:443");
 
   return (
     <div className="container">
