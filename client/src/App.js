@@ -69,8 +69,8 @@ function App() {
   return (
     <div className="container">
       <Player databaseData={databaseData} />
-      {/* <Playlist socket={socket} listofPlay={listofPlay} videoId={videoId} />
-      <Search socket={socket} /> */}
+      <Playlist databaseData={databaseData} />
+      <Search />
     </div>
   );
 }

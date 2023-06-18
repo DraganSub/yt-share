@@ -1,5 +1,3 @@
-
-import Youtube from "react-youtube";
 import React, { useState } from "react";
 import { useRef } from "react";
 import ReactPlayer from 'react-player'
@@ -16,33 +14,29 @@ export default function Player({ databaseData }) {
     }
 
     const handleSeek = (seconds) => {
-        // if (isMuted) {
-        //     setIsMuted(false);
-        // }
         if (databaseData.currentTime < seconds.playedSeconds) {
             update(ref(database, "youtubeData/"), { currentTime: seconds.playedSeconds })
         }
     }
 
-    // const handleEnd = () => {
-    //     socket.send(JSON.stringify({ message: "onCurrentVideoEnd", videoId: videoId }));
-    // }
+    const handleEnd = () => {
+        let currentVideoIndex;
+        Object.entries(databaseData.playList).map((entry, i) => {
+            if (entry[1].id.videoId === databaseData.specificVideo) {
+                currentVideoIndex = i;
+            }
+        })
 
-    // const handleError = (error) => {
-    //     console.error(error)
-    //     socket.send(JSON.stringify({ message: "onYoutubeError", videoId: videoId }));
-    // }
+        if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
+            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].id.videoId, currentTime: 0, isPlaying: true })
+        } else {
+            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].id.videoId, currentTime: 0, isPlaying: true })
+        }
+    }
 
     const handleStart = () => {
         player.current.seekTo(databaseData.currentTime);
-        // setTimeout(() => {
-        //     setIsMuted(false);
-        // }, 500)
     }
-
-    // if (videoId == null) {
-    //     return 
-    // }
 
     const onPause = () => {
         update(ref(database, "youtubeData/"), { isPlaying: false })
@@ -58,23 +52,14 @@ export default function Player({ databaseData }) {
             <h1>YouTube Sync</h1>
             <ReactPlayer
                 playing={databaseData.isPlaying}
-                controls={false}
+                controls={true}
                 url={`https://www.youtube.com/watch?v=${databaseData.specificVideo}`}
                 onPause={onPause}
                 onPlay={onPlay}
                 onProgress={handleSeek}
-                // seconds
-                // onEnded={handleEnd}
-                // onError={handleError}
+                onEnded={handleEnd}
+                onError={handleEnd}
                 onReady={handleStart}
-                // config={{
-                //     youtube: {
-                //         playerVars: {
-                //             start: seekTime
-
-                //         }
-                //     }
-                // }}
                 muted={isMuted}
                 ref={player}
             />

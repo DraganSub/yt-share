@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { VideoCard } from ".";
+import { push, ref } from "firebase/database";
+import { database } from '../firebase';
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
-export default function Search({ socket }) {
+export default function Search() {
     const [searchTerm, setSearchTerm] = useState('');
     const [videos, setVideos] = useState([]);
 
@@ -38,7 +40,7 @@ export default function Search({ socket }) {
     };
 
     const addToPlaylist = (video) => {
-        socket.send(JSON.stringify({ message: "addToPlaylist", video: video }))
+        push(ref(database, "youtubeData/playList"), video)
     }
 
     return (
