@@ -52,7 +52,7 @@ export default function Player({ databaseData }) {
             <h1>YouTube Sync</h1>
             <ReactPlayer
                 playing={databaseData.isPlaying}
-                controls={true}
+                controls={false}
                 url={`https://www.youtube.com/watch?v=${databaseData.specificVideo}`}
                 onPause={onPause}
                 onPlay={onPlay}
