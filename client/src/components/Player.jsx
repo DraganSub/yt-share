@@ -8,6 +8,7 @@ import { update, ref } from "firebase/database";
 export default function Player({ databaseData }) {
     const player = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
+    const [volume, setVolume] = useState(0);
 
     if (databaseData == null) {
         return <div>No video queried yet</div>;
@@ -61,6 +62,7 @@ export default function Player({ databaseData }) {
                 onError={handleEnd}
                 onReady={handleStart}
                 muted={isMuted}
+                volume={volume}
                 config={{
                     youtube: {
                         playerVars: {
@@ -75,6 +77,28 @@ export default function Player({ databaseData }) {
             <button onClick={onPlay}>PLAY</button>
             <button onClick={onPause}>STOP</button>
             <button onClick={() => setIsMuted(!isMuted)}>Mute/Unmute</button>
+            <VolumeSlider volume={volume} setVolume={setVolume} setIsMuted={setIsMuted} />
         </div>
     );
 };
+
+function VolumeSlider({ volume, setVolume, setIsMuted }) {
+    const handleVolumeChange = (event) => {
+        const newVolume = parseFloat(event.target.value);
+        setIsMuted(false);
+        setVolume(newVolume);
+    };
+    return (
+
+        <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={volume}
+            onChange={handleVolumeChange}
+        />
+
+    );
+};
+
