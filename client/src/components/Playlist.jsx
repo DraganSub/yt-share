@@ -10,7 +10,7 @@ export default function Playlist({ databaseData }) {
         return <div>Empty playlist</div>
     }
     const playVideo = (video) => {
-        update(ref(database, "youtubeData/"), { specificVideo: video.id.videoId, currentTime: 0 })
+        update(ref(database, "youtubeData/"), { specificVideo: video.id.videoId, currentTime: 0, isPlaying: true })
     }
 
     const removeVideoFromPlaylist = (video) => {
@@ -29,9 +29,9 @@ export default function Playlist({ databaseData }) {
 
         if (video.id.videoId === databaseData.specificVideo) {
             if (Object.values(databaseData.playList).length > currentVideoIndex + 1) {
-                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].id.videoId, currentTime: 0 })
+                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].id.videoId, currentTime: 0, isPlaying: true })
             } else {
-                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].id.videoId, currentTime: 0 })
+                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].id.videoId, currentTime: 0, isPlaying: true })
             }
         }
 
