@@ -50,7 +50,6 @@ export default function Player({ databaseData }) {
 
     return (
         <div className="App">
-            <h1>YouTube Sync</h1>
             <ReactPlayer
                 playing={databaseData.isPlaying}
                 controls={false}
