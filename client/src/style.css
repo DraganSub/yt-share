@@ -74,7 +74,8 @@ button{
   padding: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -89,7 +90,7 @@ button{
 }
 
 .card--img{
-  width: 150px;
+  width: 200px;
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 28px;
