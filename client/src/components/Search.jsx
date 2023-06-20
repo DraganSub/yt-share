@@ -3,6 +3,7 @@ import axios from 'axios';
 import { VideoCard } from ".";
 import { push, ref } from "firebase/database";
 import { database } from '../firebase';
+import { toUsedVideoObject } from '../utils';
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
@@ -33,7 +34,7 @@ export default function Search() {
                     },
                 }
             );
-            setVideos(response.data.items);
+            setVideos(response.data.items.map((video) => toUsedVideoObject(video)));
         } catch (error) {
             console.error(error);
         }

@@ -23,15 +23,15 @@ export default function Player({ databaseData }) {
     const handleEnd = () => {
         let currentVideoIndex;
         Object.entries(databaseData.playList).map((entry, i) => {
-            if (entry[1].id.videoId === databaseData.specificVideo) {
+            if (entry[1].videoId === databaseData.specificVideo) {
                 currentVideoIndex = i;
             }
         })
 
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
-            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].id.videoId, currentTime: 0, isPlaying: true })
+            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
         } else {
-            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].id.videoId, currentTime: 0, isPlaying: true })
+            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
         }
     }
 

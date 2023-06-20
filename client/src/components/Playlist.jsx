@@ -10,7 +10,7 @@ export default function Playlist({ databaseData }) {
         return <div>Empty playlist</div>
     }
     const playVideo = (video) => {
-        update(ref(database, "youtubeData/"), { specificVideo: video.id.videoId, currentTime: 0, isPlaying: true })
+        update(ref(database, "youtubeData/"), { specificVideo: video.videoId, currentTime: 0, isPlaying: true })
     }
 
 
@@ -19,7 +19,7 @@ export default function Playlist({ databaseData }) {
         let entryId = null;
         let currentVideoIndex;
         Object.entries(databaseData.playList).map((entry, i) => {
-            if (entry[1].id.videoId === video.id.videoId) {
+            if (entry[1].videoId === video.videoId) {
                 entryId = entry[0];
                 currentVideoIndex = i;
             }
@@ -29,11 +29,11 @@ export default function Playlist({ databaseData }) {
             remove(ref(database, `youtubeData/playList/${entryId}`))
         }
 
-        if (video.id.videoId === databaseData.specificVideo) {
+        if (video.videoId === databaseData.specificVideo) {
             if (Object.values(databaseData.playList).length > currentVideoIndex + 1) {
-                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].id.videoId, currentTime: 0, isPlaying: true })
+                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
             } else {
-                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].id.videoId, currentTime: 0, isPlaying: true })
+                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
             }
         }
 
@@ -56,7 +56,7 @@ function CurrentPlayingSong(data) {
         return <div>Not playing any song currently.</div>
     }
 
-    const id = Object.values(data.data.playList).findIndex(element => element.id.videoId == data.data.specificVideo)
+    const id = Object.values(data.data.playList).findIndex(element => element.videoId == data.data.specificVideo)
 
 
     const test = Object.values(data.data.playList).map((vid, i) => {
@@ -65,13 +65,13 @@ function CurrentPlayingSong(data) {
             const sideImg = Object.values(data.data.playList)
 
             return <div className="pos-rel flex center current">
-                <img className="prev-played-video" src={sideImg[i - 1]?.snippet.thumbnails.high.url} />
+                <img className="prev-played-video" src={sideImg[i - 1]?.thumbnailUrl} />
                 <div className="pos-rel">
-                    <img className="currently-playing-img" src={vid.snippet.thumbnails.high.url} />
+                    <img className="currently-playing-img" src={vid.thumbnailUrl} />
                     <MusicWave isPlaying={data.data.isPlaying} />
-                    <h3 className="playing--title">{vid.snippet.title}</h3>
+                    <h3 className="playing--title">{vid.videoTitle}</h3>
                 </div>
-                <img className="next-played-video" src={sideImg[i + 1]?.snippet.thumbnails.high.url} />
+                <img className="next-played-video" src={sideImg[i + 1]?.thumbnailUrl} />
             </div>
         }
     })

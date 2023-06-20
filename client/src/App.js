@@ -1,4 +1,4 @@
-import { Player, Search, Playlist } from "./components";
+import { Player, Search, Playlist, AddWholePlaylist } from "./components";
 import { useEffect, useState } from "react";
 import { database } from "../src/firebase";
 import { onValue, ref } from "firebase/database";
@@ -34,7 +34,9 @@ function App() {
       <div className="playlist">
         <Playlist databaseData={databaseData} />
       </div>
+      <AddWholePlaylist />
     </main>
+      
   );
 }
 
