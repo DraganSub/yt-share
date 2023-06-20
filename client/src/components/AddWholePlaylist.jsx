@@ -19,7 +19,11 @@ export default function AddWholePlaylist() {
             );
             const data = await response.json();
             if (data.items.length > 0) {
-                setFetchedVideos(data.items.map(video => playlistVideoToUsedVideoObject(video)));
+                setFetchedVideos(data.items.map(video => {
+                    if (video.snippet.title !== "Deleted video") {
+                        return playlistVideoToUsedVideoObject(video)
+                    }
+                }));
             }
             setResultNumber(data.items.length);
         } catch (error) {
@@ -33,7 +37,9 @@ export default function AddWholePlaylist() {
             await remove(ref(database, `youtubeData/playList`))
             firstVideoId = fetchedVideos[0].videoId;
             fetchedVideos.map(video => {
+
                 addToPlaylist(video)
+
             });
             if (firstVideoId) {
                 replaceCurrentVideo(firstVideoId);
