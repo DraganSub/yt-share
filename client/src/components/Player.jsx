@@ -29,7 +29,10 @@ export default function Player({ databaseData }) {
         })
 
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
-            await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
+            //await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
+            await update(ref(database, "youtubeData/"), { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId })
+            await update(ref(database, "youtubeData/"), { currentTime: 0 });
+            await update(ref(database, "youtubeData/"), { isPlaying: true })
         } else {
             await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
         }
