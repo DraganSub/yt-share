@@ -26,6 +26,30 @@
   flex-grow: 0;
   flex-basis: 30vw;
   padding: 20px 10px;
+  
+}
+
+
+
+.video-controls-container {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  color: white;
+  background: black;
+  position: relative;
+  height: 50px;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+  bottom: 50px;
+}
+
+.video-controls-container:hover
+/* .video-container:focus-within .video-controls-container,
+.video-container.paused .video-controls-container */ {
+  opacity: 1;
 }
 
 .right {
@@ -259,16 +283,16 @@ button{
 
 .play-btn{
   position: relative;
-  bottom: 35px;
+  top: 20%;
   width: 30px;
-  left: 5px;
+  left: 10px;
   background-color:transparent;
   border: none;
 }
 
 .mute-btn{
   position: relative;
-  bottom: 35px;
+  top: 20%;
   width: 30px;
   left: 15px;
   background-color:transparent;
@@ -276,31 +300,58 @@ button{
 }
 
 
-.range {
-  width: 200px;
-  height: 13px;
-  -webkit-appearance: none;
 
-  outline: none;
-  border-radius: 10px ;
-  overflow: hidden;
-  box-shadow: inset 0 0 0px rgb(182, 85, 85);
+.volume-container{
+  padding: 1px 0px;
   position: absolute;
-  bottom: 45px;
+  background-color: transparent;
+  border-radius: 8px;
+  bottom: 40px;
   left: 90px;
-  background-color:transparent;
+}
+
+
+
+
+
+
+.volume-slider {
+  width: 200px;
+  transform-origin: left;
+ 
+}
+.slider {
+  position: absolute;
+  top: 50%;
+  left: 210px;
+  background: transparent;
+  transform: translate(-50%,-50%);
+  width: 300px;
+  height: 30px;
+  padding: 20px;
+  padding-left: 40px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  }
+
+  .slider input[type="range"] {
+  -webkit-appearance:none !important;
+  width: 420px;
+  height: 3px;
+  background: white;
   border: none;
-  border-bottom: 2px solid rgb(224, 44, 44);
-  border-top: none;
-  border-bottom-right-radius: 7px;
-}
-.range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
+  outline: none;
+  }
+  .slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  width: 30px;
+  height:30px;
+  background: rgb(196, 26, 26);
+  border: 2px solid black;
   border-radius: 50%;
-  background: #e4d4d4;
   cursor: pointer;
-  border: 4px solid rgb(255, 255, 255);
-  box-shadow: -407px 0 0 400px #f01717;
-}
+  }
+  .slider input[type="range"]::-webkit-slider-thumb:hover {
+  background: rgb(219, 219, 219);
+  }
