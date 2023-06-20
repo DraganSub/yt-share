@@ -14,13 +14,13 @@ export default function Player({ databaseData }) {
         return <div>No video queried yet</div>;
     }
 
-    const handleSeek = (seconds) => {
+    const handleSeek = async (seconds) => {
         if (databaseData.currentTime < seconds.playedSeconds) {
-            update(ref(database, "youtubeData/"), { currentTime: seconds.playedSeconds })
+            await update(ref(database, "youtubeData/"), { currentTime: seconds.playedSeconds })
         }
     }
 
-    const handleEnd = () => {
+    const handleEnd = async () => {
         let currentVideoIndex;
         Object.entries(databaseData.playList).map((entry, i) => {
             if (entry[1].videoId === databaseData.specificVideo) {
@@ -29,9 +29,9 @@ export default function Player({ databaseData }) {
         })
 
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
-            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
+            await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
         } else {
-            update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
+            await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
         }
     }
 
@@ -39,12 +39,14 @@ export default function Player({ databaseData }) {
         player.current.seekTo(databaseData.currentTime);
     }
 
-    const onPause = () => {
-        update(ref(database, "youtubeData/"), { isPlaying: false })
+    const onPause = async () => {
+        console.log("stopping")
+        await update(ref(database, "youtubeData/"), { isPlaying: false })
     }
 
-    const onPlay = () => {
-        update(ref(database, "youtubeData/"), { isPlaying: true })
+    const onPlay = async () => {
+        console.log("playing")
+        await update(ref(database, "youtubeData/"), { isPlaying: true })
 
     }
 
@@ -54,8 +56,8 @@ export default function Player({ databaseData }) {
                 playing={databaseData.isPlaying}
                 controls={false}
                 url={`https://www.youtube.com/watch?v=${databaseData.specificVideo}`}
-                onPause={onPause}
-                onPlay={onPlay}
+                // onPause={onPause}
+                // onPlay={onPlay}
                 onProgress={handleSeek}
                 onEnded={handleEnd}
                 onError={handleEnd}

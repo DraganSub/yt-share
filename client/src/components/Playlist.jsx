@@ -9,13 +9,13 @@ export default function Playlist({ databaseData }) {
     if (databaseData?.playList == null) {
         return <div>Empty playlist</div>
     }
-    const playVideo = (video) => {
-        update(ref(database, "youtubeData/"), { specificVideo: video.videoId, currentTime: 0, isPlaying: true })
+    const playVideo = async (video) => {
+        await update(ref(database, "youtubeData/"), { specificVideo: video.videoId, currentTime: 0, isPlaying: true })
     }
 
 
 
-    const removeVideoFromPlaylist = (video) => {
+    const removeVideoFromPlaylist = async (video) => {
         let entryId = null;
         let currentVideoIndex;
         Object.entries(databaseData.playList).map((entry, i) => {
@@ -26,14 +26,14 @@ export default function Playlist({ databaseData }) {
         })
 
         if (entryId) {
-            remove(ref(database, `youtubeData/playList/${entryId}`))
+            await remove(ref(database, `youtubeData/playList/${entryId}`))
         }
 
         if (video.videoId === databaseData.specificVideo) {
             if (Object.values(databaseData.playList).length > currentVideoIndex + 1) {
-                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
+                await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
             } else {
-                update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
+                await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
             }
         }
 

@@ -14,8 +14,7 @@ function App() {
 
     window.addEventListener('pausebackgroundtabs', preventPauseBackgroundTabs, true);
 
-    const someRef = ref(database, "youtubeData/");
-    onValue(someRef, (snapshot) => {
+    onValue(ref(database, "youtubeData/"), (snapshot) => {
       const data = snapshot.val();
       setDatabaseData(data);
     })
@@ -36,7 +35,7 @@ function App() {
       </div>
       <AddWholePlaylist />
     </main>
-      
+
   );
 }
 

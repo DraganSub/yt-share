@@ -27,10 +27,10 @@ export default function AddWholePlaylist() {
         }
     }
 
-    const addToCurrentPlaylist = () => {
-        remove(ref(database, `youtubeData/playList`))
+    const addToCurrentPlaylist = async () => {
         let firstVideoId = null;
         if (fetchedVideos.length > 0) {
+            await remove(ref(database, `youtubeData/playList`))
             firstVideoId = fetchedVideos[0].videoId;
             fetchedVideos.map(video => {
                 addToPlaylist(video)
@@ -41,16 +41,16 @@ export default function AddWholePlaylist() {
         }
     }
 
-    const replaceCurrentVideo = (videoId) => {
-        update(ref(database, "youtubeData/"), { specificVideo: videoId, currentTime: 0, isPlaying: true })
+    const replaceCurrentVideo = async (videoId) => {
+        await update(ref(database, "youtubeData/"), { specificVideo: videoId, currentTime: 0, isPlaying: true })
     }
 
-    const addToPlaylist = (video) => {
-        push(ref(database, "youtubeData/playList"), video)
+    const addToPlaylist = async (video) => {
+        await push(ref(database, "youtubeData/playList"), video)
     }
 
-    const removeAll = () => {
-        remove(ref(database, `youtubeData/playList`))
+    const removeAll = async () => {
+        await remove(ref(database, `youtubeData/playList`))
     }
 
     return <div>

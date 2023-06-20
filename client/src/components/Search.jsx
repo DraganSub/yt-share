@@ -40,8 +40,8 @@ export default function Search() {
         }
     };
 
-    const addToPlaylist = (video) => {
-        push(ref(database, "youtubeData/playList"), video)
+    const addToPlaylist = async (video) => {
+        await push(ref(database, "youtubeData/playList"), video)
     }
 
     return (
