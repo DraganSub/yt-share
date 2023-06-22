@@ -29,7 +29,6 @@ export default function Player({ databaseData }) {
         })
 
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
-            //await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true })
             await update(ref(database, "youtubeData/"), { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId })
             await update(ref(database, "youtubeData/"), { currentTime: 0 });
             await update(ref(database, "youtubeData/"), { isPlaying: true })
@@ -66,6 +65,8 @@ export default function Player({ databaseData }) {
                 onError={handleEnd}
                 onReady={handleStart}
                 muted={isMuted}
+                width={1100}
+                height={665}
                 volume={volume}
                 config={{
                     youtube: {
@@ -90,7 +91,6 @@ export default function Player({ databaseData }) {
                         </svg>
                     }
                 </button>
-                {/*   <button onClick={onPause}>STOP</button> */}
                 <button className="mute-btn" onClick={() => setIsMuted(!isMuted)}>{!isMuted ?
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.4"
                         style={{ backgroundColor: "transparent" }} stroke="currentColor" class="w-6 h-6">
@@ -115,31 +115,6 @@ function VolumeSlider({ volume, setVolume, setIsMuted }) {
         setVolume(newVolume);
     };
     return (
-
-        /*         <div class="slider">
-                    <input
-                        type="range"
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={volume}
-                        onChange={handleVolumeChange}
-                        className="slider-input"
-                    />
-                </div> */
-
-        /*  <div class="volume-container">
-             <input
-                 type="range"
-                 min={0}
-                 max={1}
-                 step={0.01}
-                 value={volume}
-                 onChange={handleVolumeChange}
-                 className="volume-slider"
-             />
-         </div> */
-
         <div class="slider">
             <input
                 type="range"

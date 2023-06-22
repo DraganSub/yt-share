@@ -1,10 +1,10 @@
-export default function MusicWave({ isPlaying }) {
+export default function MusicWave({ isPlaying, className }) {
   if (!isPlaying) {
     return null;
   }
 
   return (
-    <div class="boxContainer">
+    <div class={className != null ? `${className} boxContainer` : "boxContainer"} >
       <div class="box box1"></div>
       <div class="box box2"></div>
       <div class="box box3"></div>

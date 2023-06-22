@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { VideoCard } from ".";
 import { update, ref, remove } from "firebase/database";
 import { database } from "../firebase";
 import MusicWave from "./MusicWave";
+import VideoPlaylistCard from "./VideoPlaylistCard";
+import AddWholePlaylist from "./AddWholePlaylist";
 
 export default function Playlist({ databaseData }) {
 
@@ -36,16 +38,35 @@ export default function Playlist({ databaseData }) {
                 await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
             }
         }
-
     }
 
     return <>
         <div className="flex flex-cl playlist--container">
-            <div class="carousel">
+            {/*   <div class="carousel">
                 <CurrentPlayingSong data={databaseData} />
-            </div>
+            </div> */}
             <div className="playlist--list">
-                {Object.values(databaseData.playList).map(video => <VideoCard video={video} inPlaylist method={playVideo} videoId={databaseData.specificVideo} removeMethod={removeVideoFromPlaylist} />)}
+                <div className="playlist--container">
+                    <div className="pos-rel playlist--title-container playlist--top">
+                        <p className="current-title">Your current playlist:
+                        <br />
+                        </p>
+                        <div className="add--accordion-section">
+                            <AddPlaylistAccordion />
+                        </div>
+                    </div>
+                    <div className="playlist--bottom">
+                        {Object.values(databaseData.playList).map(video => <VideoPlaylistCard
+                            video={video}
+                            isActive={databaseData.specificVideo == video.videoId}
+                            inPlaylist
+                            method={playVideo}
+                            isPlaying={databaseData.specificVideo == video.videoId && databaseData.isPlaying}
+                            videoId={databaseData.specificVideo}
+                            removeMethod={removeVideoFromPlaylist}
+                        />)}
+                    </div>
+                </div>
             </div>
         </div>
     </>
@@ -77,5 +98,22 @@ function CurrentPlayingSong(data) {
     })
 
     return test;
+
+}
+
+function AddPlaylistAccordion() {
+
+    const [isOpen, setIsOpen] = useState(false);
+    return <>
+        <div className="add-pl--btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="white" class="w-6 h-6" style={{ width: "30px", height: "30px", background: "transparent" }} onClick={() => setIsOpen(!isOpen)}>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+        {isOpen && <div className="add--form-accordion">
+            <AddWholePlaylist />
+        </div>}
+    </>
+
 
 }

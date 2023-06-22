@@ -59,11 +59,11 @@ export default function AddWholePlaylist() {
         await remove(ref(database, `youtubeData/playList`))
     }
 
-    return <div>
-        Add playlist
-        <input name="playlistId" onChange={(e) => setPlaylistId(e.target.value)} value={playlistId} />
-        <button onClick={() => fetchData(playlistId)}>Submit</button>
-        {resultNumber && <><div>Results: {resultNumber}</div> <button onClick={() => addToCurrentPlaylist()}>Replace current playlist</button></>}
-        <button onClick={removeAll}>Remove all items from playlist</button>
+    return <div className="add-pl-form">
+        <h3 className="add-pl-title">Add playlist</h3>
+        <input name="playlistId" className="playlistId" placeholder="Please add your list id here" onChange={(e) => setPlaylistId(e.target.value)} value={playlistId} />
+        <button className="submit-pl--btn" onClick={() => fetchData(playlistId)}>Submit</button>
+        {resultNumber && <><div>Results: {resultNumber}</div> <button onClick={() => addToCurrentPlaylist()} className="submit-pl--btn replace-btn" >Replace current playlist</button></>}
+        <button className="remove-pl--btn" onClick={removeAll}>Remove all items from playlist</button>
     </div>
 }
