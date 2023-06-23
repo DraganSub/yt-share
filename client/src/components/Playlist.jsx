@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { VideoCard } from ".";
+import React, { useState } from "react";
 import { update, ref, remove } from "firebase/database";
 import { database } from "../firebase";
 import MusicWave from "./MusicWave";

@@ -58,10 +58,11 @@
 .right {
   flex-grow: 0;
   flex-basis: calc(30vw - 20px);
+
 }
 
 .serach--input{
-  width: calc(100% - 100px);
+  width: 100%;
   line-height: 30px;
   text-indent: 20px;
   background-color: transparent;
@@ -72,8 +73,8 @@
 }
 
 .search--form{
-  padding-top: 20px;
   display: flex;
+  width: 500px;
 }
 
 .search--btn{
@@ -103,13 +104,14 @@ button{
 }
 
 .videoResultCard{
-  padding: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  flex-wrap: wrap;
+  position: relative;
+  cursor: pointer;
 }
+
+
 
 .card--title{
   font-size: 14px;
@@ -117,20 +119,20 @@ button{
   font-weight: 400;
   flex-grow: 0;
   flex-basis: 60px;
-  text-align: center;
   padding: 0px 5px;
 }
 
 .card--img{
-  width: 200px;
-  aspect-ratio: 1;
+  width: 300px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 28px;
+  border-radius: 15px;
+  margin-top: 5px;
 }
 
 .card--video-img{
   position: relative;
-
+  
 }
 
 .addToPlaylistButton{
@@ -143,7 +145,7 @@ button{
 }
 
 .add--btn{
-  width: 30px;
+  width: 35px;
   background: transparent;
 }
 
@@ -154,9 +156,11 @@ button{
 .lay{
   position: absolute;
   background-color: black;
-  width: 100%;
-  height: 100%;
-  opacity: 0.65;
+  width: 300px;
+  height: 180px;
+  border-radius: 15px;
+  opacity: 0.60;
+  margin-top: 5px;
 }
 
 
@@ -359,6 +363,7 @@ button{
     width: 100%;
     border-radius: 20px;
     overflow: hidden;
+    
   }
 
   .playlist--list{
@@ -384,6 +389,16 @@ button{
 
   .playlist--bottom{
     max-height: 600px;
+    overflow-y: auto;
+    flex-grow: 0;
+    flex-basis: 578px;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search--bottom{
+    max-height: 588px;
     overflow-y: auto;
     flex-grow: 0;
     flex-basis: 578px;
@@ -467,11 +482,17 @@ button{
     background-color: #AAAAAA;
   }
 
-
+#widget2{
+  box-shadow: rgba(52, 110, 168, 0.3) 10px 14px 34px;
+}
   .pl--remove-from-playlist{
     border: none;
     position: absolute;
     right: 25px;
+    top: 50%;
+    background: transparent;
+    transform: translate(0px, -50%);
+    z-index: 100;
   }
 
   .current-title{
@@ -595,4 +616,57 @@ button{
   position: absolute;
   top: 10px;
   right: 20px;
+}
+
+.search--section-container{
+  width: 650px;
+  height: 670px;
+  position: absolute;
+  background: rgb(5,5,5);
+  border: 1px solid rgb(53, 53, 53);
+  right: 0;
+  z-index: 100000;
+  transition: 1s ease-in;
+  border-radius: 6px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 10px 14px;
+}
+
+.exit-search{
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  position: absolute;
+  right: 20px;
+  top: 21px;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.search--input{
+  position: absolute;
+  top: 15px;
+  width: 90%;
+  left: 20px;
+}
+
+.card--video-img{
+  flex-grow: 0;
+  flex-basis: calc(50% - 50px);
+  background: transparent;
+}
+
+.card--title{
+  flex-grow: 0;
+  flex-basis: calc(50% - 50px);
+  padding: 20px 20px;
+}
+
+.pos-txt-top{
+  position: absolute;
+  top: 30px;
+  left: 305px;
+}
+
+.txt-big{
+  font-size: 18px;
 }

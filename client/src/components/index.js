@@ -4,3 +4,4 @@ export { default as Playlist } from "./Playlist";
 export { default as VideoCard } from "./VideoCard";
 export { default as MusicWave } from "./MusicWave";
 export { default as AddWholePlaylist } from "./AddWholePlaylist";
+export { default as SearchSection } from "./SearchSection";
