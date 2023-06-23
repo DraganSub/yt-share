@@ -1,7 +1,7 @@
 import { Player, Search, Playlist, AddWholePlaylist, SearchSection } from "./components";
 import { useEffect, useState } from "react";
-import { database } from "../src/firebase";
-import { onValue, ref } from "firebase/database";
+import { database, databaseMessengerId } from "../src/firebase";
+import { onValue, ref, update, onDisconnect } from "firebase/database";
 import "./style.css";
 
 function App() {
@@ -16,9 +16,18 @@ function App() {
 
     onValue(ref(database, "youtubeData/"), (snapshot) => {
       const data = snapshot.val();
-      setDatabaseData(data);
+      if (data.mainMessagingSenderId == "") {
+        console.log("updated main messenger")
+        update(ref(database, "youtubeData/"), { mainMessagingSenderId: databaseMessengerId })
+        setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
+      } else {
+        console.log(database);
+        setDatabaseData(data);
+      }
     })
   }, [])
+
+
 
   return (
     <main className="pos-rel main">

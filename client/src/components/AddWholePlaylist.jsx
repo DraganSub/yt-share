@@ -20,7 +20,7 @@ export default function AddWholePlaylist() {
             const data = await response.json();
             if (data.items.length > 0) {
                 setFetchedVideos(data.items.map(video => {
-                    if (video.snippet.title !== "Deleted video") {
+                    if (video.snippet.title !== "Deleted video" && video.snippet.title !== "Private video") {
                         return playlistVideoToUsedVideoObject(video)
                     }
                 }));
