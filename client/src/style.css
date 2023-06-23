@@ -49,9 +49,8 @@
   bottom: 50px;
 }
 
-.video-controls-container:hover
-/* .video-container:focus-within .video-controls-container,
-.video-container.paused .video-controls-container */ {
+.player:hover .video-controls-container
+{
   opacity: 1;
 }
 
