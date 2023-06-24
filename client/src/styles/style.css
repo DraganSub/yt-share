@@ -685,9 +685,10 @@ button{
 /* ****** SAVED PLAYLISTS ******* */
 
 .saved-playlists--section{
-  width: 100%;
+  width: 90%;
   height: fit-content;
   padding: 10px;
+  margin: auto;
 }
 
 
@@ -705,9 +706,11 @@ button{
   width: 250px;
   height: 400px;
 }
+
 .saved-playlists--item{
   position: relative;
 }
+
 .saved-playlists--title-wrap{
   width: 250px;
   height: 100px;
@@ -715,7 +718,6 @@ button{
   z-index: 1;
   bottom: 20px;
   background: #3b3d41;
-  
 }
 
 .saved-playlists--title{
@@ -725,7 +727,6 @@ button{
   background: transparent;
   letter-spacing: 0.5px;
   padding-left: 20px;
-
 }
 
 .saved-playlists--title-wrap::before {
@@ -739,9 +740,6 @@ button{
   backdrop-filter: blur(10px);
 }
 
-
-
-/* test */
 .card {
   --blur: 16px;
   --size: clamp(200px, 50vmin, 300px);
@@ -784,15 +782,10 @@ button{
   position: absolute;
   aspect-ratio: 1;
   width: calc(var(--size) * 0.18);
-  bottom: 30%;
-  right: 1.5rem;
-  transform: translateY(50%)
-    translateY(
-      calc(
-        (var(--size) * 0.4)
-      )
-    )
-    translateY(calc(var(--hover, -1) * (var(--size) * -0.3)));
+  bottom: -20%;
+  right: 1.1rem;
+  transform: 
+    translateY(calc(var(--hover, -1) * (var(--size) * -0.50)));
   background: purple;
   display: grid;
   place-items: center;
