@@ -11,7 +11,7 @@ export default function AddPlaylistAccordion() {
       </svg>
     </div>
     {isOpen && <div className="add--form-accordion">
-      <AddWholePlaylist />
+      <AddWholePlaylist setIsOpen={setIsOpen} />
     </div>}
   </>
 }

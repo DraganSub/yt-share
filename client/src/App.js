@@ -1,4 +1,4 @@
-import { Player, Playlist, SearchSection } from "./components";
+import { Player, Playlist, SavedPlaylists, SearchSection } from "./components";
 import { useEffect, useState } from "react";
 import { database, databaseMessengerId } from "./utils/firebase";
 import { onValue, ref, update } from "firebase/database";
@@ -37,6 +37,9 @@ function App() {
       </div>
       <div className="pos-rel search--section">
         <SearchSection />
+      </div>
+      <div>
+        <SavedPlaylists databaseData={databaseData} />
       </div>
     </main>
   );

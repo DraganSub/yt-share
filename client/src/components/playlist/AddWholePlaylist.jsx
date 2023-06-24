@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { push, ref, remove, update } from "firebase/database";
+import { push, ref, remove } from "firebase/database";
 import { database } from "../../utils/firebase";
 import { playlistVideoToUsedVideoObject } from "../../utils/utils";
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
-export default function AddWholePlaylist() {
+export default function AddWholePlaylist({ setIsOpen }) {
     const [playlistId, setPlaylistId] = useState("");
+    const [playlistName, setPlaylistTitle] = useState("");
     const [resultNumber, setResultNumber] = useState(null);
     const [fetchedVideos, setFetchedVideos] = useState(null);
 
@@ -20,11 +21,8 @@ export default function AddWholePlaylist() {
             );
             const data = await response.json();
             if (data.items.length > 0) {
-                setFetchedVideos(data.items.map(video => {
-                    if (video.snippet.title !== "Deleted video" && video.snippet.title !== "Private video") {
-                        return playlistVideoToUsedVideoObject(video)
-                    }
-                }));
+                const videosThatWork = data.items.filter(video => video.snippet.title !== "Deleted video" && video.snippet.title !== "Private video");
+                setFetchedVideos(videosThatWork.map(video => playlistVideoToUsedVideoObject(video)));
             }
             setResultNumber(data.items.length);
         } catch (error) {
@@ -32,28 +30,16 @@ export default function AddWholePlaylist() {
         }
     }
 
-    const addToCurrentPlaylist = async () => {
-        let firstVideoId = null;
-        if (fetchedVideos.length > 0) {
-            await remove(ref(database, `youtubeData/playList`))
-            firstVideoId = fetchedVideos[0].videoId;
-            fetchedVideos.map(video => {
-
-                addToPlaylist(video)
-
-            });
-            if (firstVideoId) {
-                replaceCurrentVideo(firstVideoId);
-            }
+    const addToListOfPlaylists = async () => {
+        const playlistObject = {
+            isPlaylistActive: false,
+            playListTitle: playlistName,
+            nrOfSongs: resultNumber,
+            playlistId: playlistId,
+            playlistImg: fetchedVideos[0].thumbnailUrl
         }
-    }
-
-    const replaceCurrentVideo = async (videoId) => {
-        await update(ref(database, "youtubeData/"), { specificVideo: videoId, currentTime: 0, isPlaying: true })
-    }
-
-    const addToPlaylist = async (video) => {
-        await push(ref(database, "youtubeData/playList"), video)
+        await push(ref(database, "youtubeData/playListList"), playlistObject)
+        setIsOpen(false);
     }
 
     const removeAll = async () => {
@@ -63,8 +49,9 @@ export default function AddWholePlaylist() {
     return <div className="add-pl-form">
         <h3 className="add-pl-title">Add playlist</h3>
         <input name="playlistId" className="playlistId" placeholder="Please add your list id here" onChange={(e) => setPlaylistId(e.target.value)} value={playlistId} />
+        <input name="playlistName" className="playlistId" placeholder="Playlist title" onChange={(e) => setPlaylistTitle(e.target.value)} value={playlistName} />
         <button className="submit-pl--btn" onClick={() => fetchData(playlistId)}>Submit</button>
-        {resultNumber && <><div>Results: {resultNumber}</div> <button onClick={() => addToCurrentPlaylist()} className="submit-pl--btn replace-btn" >Replace current playlist</button></>}
+        {resultNumber && <><div>Results: {resultNumber}</div> <button onClick={() => addToListOfPlaylists()} className="submit-pl--btn replace-btn" >Add to playlist list</button></>}
         <button className="remove-pl--btn" onClick={removeAll}>Remove all items from playlist</button>
     </div>
 }
