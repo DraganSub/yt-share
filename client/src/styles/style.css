@@ -805,13 +805,10 @@ button{
   position: absolute;
   aspect-ratio: 1;
   width: calc(var(--size) * 0.18);
-  bottom: 30%;
-  right: 1.5rem;
-  transform: translateY(50%)
-    translateY(
-      calc((var(--size) * 0.4))) translateX( calc(
-      (var(--size) * -0.66)
-    )) translateY(calc(var(--hover, -1.1) * (var(--size) * -1.1)));
+  bottom: -20%;
+  left: 1.5rem;
+ transform:  translateY(50%)
+    translateY(calc(var(--hover, -1.1) * (var(--size) * -1.4)));
   background: rgb(163, 11, 11) !important;
   display: grid;
   place-items: center;
