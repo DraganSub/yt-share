@@ -13,3 +13,17 @@ export function playlistVideoToUsedVideoObject(video) {
         videoTitle: video.snippet.title
     }
 }
+
+export const trimVideoTxt = (txt) => {
+    const t = capitalizeWords(txt)
+    if (t.length > 40) {
+        return t.substring(0, 30) + '...';
+    }
+    return t;
+}
+
+export function capitalizeWords(str) {
+    return str.replace(/\b\w/g, function (match) {
+        return match.toUpperCase();
+    });
+}

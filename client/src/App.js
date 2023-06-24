@@ -1,8 +1,8 @@
 import { Player, Playlist, SearchSection } from "./components";
 import { useEffect, useState } from "react";
-import { database, databaseMessengerId } from "../src/firebase";
+import { database, databaseMessengerId } from "./utils/firebase";
 import { onValue, ref, update } from "firebase/database";
-import "./style.css";
+import "./styles/style.css";
 
 function App() {
   const [databaseData, setDatabaseData] = useState(null);
@@ -25,8 +25,6 @@ function App() {
     })
   }, [])
 
-
-
   return (
     <main className="pos-rel main">
       <div className="play--container">
@@ -41,7 +39,6 @@ function App() {
         <SearchSection />
       </div>
     </main>
-
   );
 }
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { VideoCard } from ".";
+import { VideoCard } from "..";
 import { push, ref } from "firebase/database";
-import { database } from '../firebase';
-import { toUsedVideoObject } from '../utils';
+import { database } from '../../utils/firebase';
+import { toUsedVideoObject } from '../../utils/utils';
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 

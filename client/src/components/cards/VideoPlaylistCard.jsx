@@ -1,21 +1,8 @@
 import React from "react";
-import MusicWave from "./MusicWave";
+import { MusicWave } from "..";
+import { trimVideoTxt } from "../../utils/utils";
 
 export default function VideoPlaylistCard({ video, isActive, method, removeMethod, isPlaying }) {
-  const trimVideoTxt = (txt) => {
-    const t = capitalizeWords(txt)
-    if (t.length > 40) {
-      return t.substring(0, 30) + '...';
-    }
-    return t;
-  }
-
-  function capitalizeWords(str) {
-    return str.replace(/\b\w/g, function (match) {
-      return match.toUpperCase();
-    });
-  }
-
   return (
     <div className="pos-rel play-hov">
       <div key={video.videoId} className={isActive ? " video-playlist__card pl-is-active" : "video-playlist__card"} onClick={() => method(video)}>

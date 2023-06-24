@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { push, ref, remove, update } from "firebase/database";
-import { database } from "../firebase";
-import { playlistVideoToUsedVideoObject } from "../utils";
+import { database } from "../../utils/firebase";
+import { playlistVideoToUsedVideoObject } from "../../utils/utils";
+
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
 export default function AddWholePlaylist() {
