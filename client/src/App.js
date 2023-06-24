@@ -38,7 +38,7 @@ function App() {
       <div className="pos-rel search--section">
         <SearchSection />
       </div>
-      <div>
+      <div className="saved-playlists--section">
         <SavedPlaylists databaseData={databaseData} />
       </div>
     </main>

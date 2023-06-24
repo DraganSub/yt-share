@@ -2,6 +2,7 @@ import React from "react";
 import { remove, ref, update, push } from "firebase/database";
 import { database } from "../../utils/firebase";
 import { playlistVideoToUsedVideoObject } from "../../utils/utils";
+import { MusicWave } from "../common";
 
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
@@ -12,9 +13,11 @@ export default function SavedPlaylists({ databaseData }) {
         return <div>No playlists saved</div>
     }
 
-    return Object.values(databaseData.playListList).map(playlist =>
-        <PlaylistItem key={playlist.playlistId} playlistItem={playlist} allPlaylists={databaseData.playListList} />
-    )
+    return <div className="saved-playlists--container playlists--overflow">
+        {Object.values(databaseData.playListList).map(playlist =>
+            <PlaylistItem key={playlist.playlistId} playlistItem={playlist} allPlaylists={databaseData.playListList} />
+        )}
+    </div>
 }
 
 function PlaylistItem({ playlistItem, allPlaylists }) {
@@ -88,11 +91,34 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
         }
     }
 
-    return <div>
-        <div>{playlistItem.playListTitle}</div>
-        <div>{JSON.stringify(playlistItem.isPlaylistActive)}</div>
-        <div>{playlistItem.nrOfSongs}</div>
-        <button onClick={() => replaceCurrentPlaylist()}>Play</button>
-        <button onClick={() => removePlaylistFromList()}>Remove</button>
-    </div>
+    return <>
+        <div class="card">
+            <img src={playlistItem.playlistImg} alt={playlistItem.playlistImg} class="card__img" />
+            <span class="card__footer">
+                <span className="saved-playlists--title">{playlistItem.playListTitle}</span>
+            </span>
+            {playlistItem.isPlaylistActive && <div className="saved--playlist-wave">
+                <MusicWave isPlaying={playlistItem.isPlaylistActive} />
+            </div>}
+            {!playlistItem.isPlaylistActive &&
+                <span class="card__action">
+                    <svg onClick={() => replaceCurrentPlaylist()} xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
+                        style={{ width: "50px", height: "50px", background: "transparent" }} class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                    </svg>
+                </span>
+            }
+
+            <span class="card__action--delete" onClick={() => removePlaylistFromList()}>
+                <div className="remove--saved-playlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6" style={{ background: "transparent", width: "50px", height: "50px" }}>
+                        <path
+
+                            stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+
+                </div>
+            </span>
+        </div>
+    </>
 }

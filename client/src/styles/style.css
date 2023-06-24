@@ -682,3 +682,171 @@ button{
   font-size: 18px;
 }
 
+/* ****** SAVED PLAYLISTS ******* */
+
+.saved-playlists--section{
+  width: 100%;
+  height: fit-content;
+  padding: 10px;
+}
+
+
+.playlists--overflow{
+  max-height: 400px;
+  overflow-y: auto;
+  top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.saved-playlists--img{
+  object-fit: cover;
+  width: 250px;
+  height: 400px;
+}
+.saved-playlists--item{
+  position: relative;
+}
+.saved-playlists--title-wrap{
+  width: 250px;
+  height: 100px;
+  position: absolute;
+  z-index: 1;
+  bottom: 20px;
+  background: #3b3d41;
+  
+}
+
+.saved-playlists--title{
+  z-index: 10;
+  position: absolute;
+  top: 10px;
+  background: transparent;
+  letter-spacing: 0.5px;
+  padding-left: 20px;
+
+}
+
+.saved-playlists--title-wrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  backdrop-filter: blur(10px);
+}
+
+
+
+/* test */
+.card {
+  --blur: 16px;
+  --size: clamp(200px, 50vmin, 300px);
+  width: var(--size);
+  height: 400px;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  border-radius: 2rem;
+  overflow: hidden;
+  color: #000;
+  transform: translateZ(0);
+  cursor: pointer;
+}
+
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(calc(1 + (var(--hover, 0) * 0.25))) ;
+  transition: transform 0.2s;
+}
+
+.card__footer {
+  padding: 0 1.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgb(51, 51, 51);
+  display: grid;
+  grid-template-row: auto auto;
+  gap: 0.5ch;
+  background: hsl(0 0% 100% / 0);
+  backdrop-filter: blur(var(--blur));
+  height: 20%;
+  align-content: center;
+}
+
+.card__action {
+  position: absolute;
+  aspect-ratio: 1;
+  width: calc(var(--size) * 0.18);
+  bottom: 30%;
+  right: 1.5rem;
+  transform: translateY(50%)
+    translateY(
+      calc(
+        (var(--size) * 0.4)
+      )
+    )
+    translateY(calc(var(--hover, -1) * (var(--size) * -0.3)));
+  background: purple;
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: hsl(0 0% 100% / 0.2);
+  transition: transform 0.2s;
+}
+
+.card__action--delete{
+  position: absolute;
+  aspect-ratio: 1;
+  width: calc(var(--size) * 0.18);
+  bottom: 30%;
+  right: 1.5rem;
+  transform: translateY(50%)
+    translateY(
+      calc(
+        (var(--size) * 0.4)
+      )
+    )
+    translateX( calc(
+      (var(--size) * -0.66)
+    ))
+    translateY(calc(var(--hover, -1.1) * (var(--size) * -1.1)));
+  background: rgb(163, 11, 11) !important;
+  display: grid;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: hsl(0 0% 100% / 0.2);
+  transition: transform 0.2s;
+  z-index: 200;
+}
+
+
+.card__footer span:nth-of-type(1) {
+  font-size: calc(var(--size) * 0.065);
+}
+
+.card__footer span:nth-of-type(2) {
+  font-size: calc(var(--size) * 0.035);
+}
+
+.card:is(:hover, :focus-visible) {
+  --hover: 1;
+}
+
+.saved--playlist-wave{
+  position: absolute;
+  top: 150px;
+  right: 0;
+  height: 20px;
+}
+
+.remove--saved-playlist{
+  background: transparent;
+  z-index: 1000;
+}
