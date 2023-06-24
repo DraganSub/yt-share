@@ -73,7 +73,7 @@
 
 .search--form{
   display: flex;
-  width: 500px;
+  width: 430px;
 }
 
 .search--btn{
@@ -835,3 +835,23 @@ button{
   background: transparent;
   z-index: 1000;
 }
+
+.search--tab-btns{
+  position: absolute;
+  top: 0;
+  right: 60px;
+  display: flex;
+  width: fit-content;
+  gap: 10px;
+  align-items: center;
+  height: 40px;
+  background: transparent;
+}
+
+.search--tab-btn{
+  border: none;
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+
