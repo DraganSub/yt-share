@@ -14,6 +14,14 @@ export function playlistVideoToUsedVideoObject(video) {
     }
 }
 
+export function playlistSearchToPlaylistObject(playlist) {
+    return {
+        playlistId: playlist.id.playlistId,
+        playlistTitle: playlist.snippet.title,
+        thumbnailUrl: playlist.snippet.thumbnails.high.url
+    }
+}
+
 export const trimVideoTxt = (txt) => {
     const t = capitalizeWords(txt)
     if (t.length > 40) {

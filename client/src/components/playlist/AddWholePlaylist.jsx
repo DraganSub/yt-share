@@ -34,7 +34,6 @@ export default function AddWholePlaylist({ setIsOpen }) {
         const playlistObject = {
             isPlaylistActive: false,
             playListTitle: playlistName,
-            nrOfSongs: resultNumber,
             playlistId: playlistId,
             playlistImg: fetchedVideos[0].thumbnailUrl
         }

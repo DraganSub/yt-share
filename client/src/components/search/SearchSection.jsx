@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Search from "./Search";
+import { SearchPlaylists } from ".";
 
 export default function SearchSection() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -39,8 +40,23 @@ export default function SearchSection() {
         d="M6 18L18 6M6 6l12 12"
       />
     </svg>
-    <div className="search--input">
-      <Search />
-    </div>
+    <SearchContainer />
   </div>
 }
+
+function SearchContainer() {
+
+  const [activeTab, setActiveTab] = useState(0)
+
+  return <>
+    <div>
+      <button onClick={() => setActiveTab(0)}>Search music</button>
+      <button onClick={() => setActiveTab(1)}>Search playlists</button>
+    </div>
+    <div className="search--input">
+      {activeTab === 0 ? <Search /> : <SearchPlaylists />}
+    </div>
+  </>
+}
+
+
