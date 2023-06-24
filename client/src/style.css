@@ -104,7 +104,7 @@ button{
 
 .videoResultCard{
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
   cursor: pointer;
@@ -316,18 +316,15 @@ button{
 .volume-slider {
   width: 200px;
   transform-origin: left;
- 
 }
 .slider {
   position: absolute;
   top: 50%;
-  left: 210px;
+  left: 240px;
   background: transparent;
   transform: translate(-50%,-50%);
   width: 300px;
   height: 30px;
-  padding: 20px;
-  padding-left: 40px;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -342,6 +339,16 @@ button{
     outline: none;
   }
 
+  .slider input[type="range"]::before {
+    content: "";
+    position: absolute;
+    width: var(--before-width);
+    background-color: red;
+    height: 3px;
+    max-width: 100%;
+    z-index: 1;
+  }
+
   .slider input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none !important;
   width: 30px;
@@ -349,13 +356,19 @@ button{
   background: rgb(196, 26, 26);
   border: 2px solid black;
   border-radius: 50%;
-  cursor: pointer;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .slider input[type="range"]::-webkit-slider-runnable-track{
+    z-index: 1;
   }
 
   .slider input[type="range"]::-webkit-slider-thumb:hover {
-  background: rgb(219, 219, 219);
+  background: rgb(214, 59, 59);
   }
 
+ 
   .playlist--container{
     display: flex;
     flex-direction: column;
@@ -669,3 +682,4 @@ button{
 .txt-big{
   font-size: 18px;
 }
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import ReactPlayer from 'react-player'
 import { database, databaseMessengerId } from "../firebase";
@@ -23,11 +23,11 @@ export default function Player({ databaseData }) {
 
     const handleEnd = async (event) => {
         console.log("end event", event)
-        if (!databaseData.playList || databaseData.playList.length == 0) {
+        if (!databaseData.playList || databaseData.playList.length === 0) {
             return;
         }
         let currentVideoIndex;
-        Object.entries(databaseData.playList).map((entry, i) => {
+        Object.entries(databaseData.playList).forEach((entry, i) => {
             if (entry[1].videoId === databaseData.specificVideo) {
                 currentVideoIndex = i;
             }
@@ -64,6 +64,7 @@ export default function Player({ databaseData }) {
     return (
         <div className="player pos-rel">
             <ReactPlayer
+                style={{ pointerEvents: "none", WebkitUserSelect: "none", msUserSelect: "none", userSelect: "none" }}
                 playing={databaseData.isPlaying}
                 controls={false}
                 url={`https://www.youtube.com/watch?v=${databaseData.specificVideo}`}
@@ -122,11 +123,17 @@ function VolumeSlider({ volume, setVolume, setIsMuted }) {
         const newVolume = parseFloat(event.target.value);
         setIsMuted(false);
         setVolume(newVolume);
+        const element = document.getElementById("test");
+        console.log(volume * 100)
+        element.style.setProperty("--before-width", `${volume * 100}% `);
     };
+
+
     return (
         <div class="slider">
             <input
                 type="range"
+                id="test"
                 min={0}
                 max={1}
                 step={0.01}
@@ -138,4 +145,6 @@ function VolumeSlider({ volume, setVolume, setIsMuted }) {
 
     );
 };
+
+
 
