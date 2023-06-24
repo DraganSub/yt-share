@@ -809,14 +809,9 @@ button{
   right: 1.5rem;
   transform: translateY(50%)
     translateY(
-      calc(
-        (var(--size) * 0.4)
-      )
-    )
-    translateX( calc(
+      calc((var(--size) * 0.4))) translateX( calc(
       (var(--size) * -0.66)
-    ))
-    translateY(calc(var(--hover, -1.1) * (var(--size) * -1.1)));
+    )) translateY(calc(var(--hover, -1.1) * (var(--size) * -1.1)));
   background: rgb(163, 11, 11) !important;
   display: grid;
   place-items: center;
