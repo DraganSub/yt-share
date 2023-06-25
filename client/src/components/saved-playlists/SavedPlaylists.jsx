@@ -3,6 +3,8 @@ import { remove, ref, update, push } from "firebase/database";
 import { database } from "../../utils/firebase";
 import { playlistVideoToUsedVideoObject } from "../../utils/utils";
 import { MusicWave } from "../common";
+import { SavedPlaylistPlayButtonIcon } from "../icons/SavedPlaylistPlayButtonIcon";
+import { SavedPlaylistRemoveButtonIcon } from "../icons/SavedPlaylistRemoveButtonIcon";
 
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
@@ -102,21 +104,15 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
             </div>}
             {!playlistItem.isPlaylistActive &&
                 <span class="card__action">
-                    <svg onClick={() => replaceCurrentPlaylist()} xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor"
-                        style={{ width: "50px", height: "50px", background: "transparent" }} class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-                    </svg>
+                    <SavedPlaylistPlayButtonIcon
+                        replaceCurrentPlaylist={replaceCurrentPlaylist}
+                    />
                 </span>
             }
 
             <span class="card__action--delete" onClick={() => removePlaylistFromList()}>
                 <div className="remove--saved-playlist">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6" style={{ background: "transparent", width: "50px", height: "50px" }}>
-                        <path
-
-                            stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-
+                    <SavedPlaylistRemoveButtonIcon />
                 </div>
             </span>
         </div>

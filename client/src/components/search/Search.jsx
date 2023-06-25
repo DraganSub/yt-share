@@ -4,6 +4,7 @@ import { VideoCard } from "..";
 import { push, ref } from "firebase/database";
 import { database } from '../../utils/firebase';
 import { toUsedVideoObject } from '../../utils/utils';
+import { SearchbarSearchIcon } from '../icons/SearchbarSearchIcon';
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
@@ -48,15 +49,9 @@ export default function Search() {
         <div>
             <form onSubmit={handleSubmit} className="search--form">
                 <input className="serach--input" type="text" value={searchTerm} placeholder="Search Music" onChange={handleChange} />
-                <button className="search--btn" type="submit"> <svg
-                    fill="white"
-                    viewBox="0 0 16 16"
-                    height="1em"
-                    width="1em"
-                    style={{ background: "transparent" }}
-                >
-                    <path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.1zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z" />
-                </svg></button>
+                <button className="search--btn" type="submit">
+                    <SearchbarSearchIcon />
+                </button>
             </form>
             <div className="search--videos search--bottom" style={{ marginTop: "20px" }}>
                 {videos.map((video) => (
