@@ -14,7 +14,7 @@ export default function SearchSection() {
   }
 
   return <div className="search--section-container">
-    <SearchMenuExitButtonIcon />
+    <SearchMenuExitButtonIcon setIsSearchOpen={setIsSearchOpen} />
     <SearchContainer />
   </div>
 }
