@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useRef } from "react";
 import ReactPlayer from 'react-player'
 import { database, databaseMessengerId } from "../../utils/firebase";
-import { update, ref } from "firebase/database";
+import { update, ref, remove } from "firebase/database";
 import { VolumeSlider } from ".";
 import VolumeControls from "./VideoControls";
-
 
 export default function Player({ databaseData }) {
     const player = useRef(null);
@@ -29,9 +28,11 @@ export default function Player({ databaseData }) {
             return;
         }
         let currentVideoIndex;
+        let currentVideoEntry;
         Object.entries(databaseData.playList).forEach((entry, i) => {
             if (entry[1].videoId === databaseData.specificVideo) {
                 currentVideoIndex = i;
+                currentVideoEntry = entry[0];
             }
         })
         setIsTransitioning(true);
@@ -44,6 +45,13 @@ export default function Player({ databaseData }) {
             await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
         }
         setIsTransitioning(false);
+
+        if (event === 150 && currentVideoEntry) {
+            //remove video from playlist with 150 error from playlist
+            //current playing video already should be next so we can safely remove video from playlist
+            await remove(ref(database, `youtubeData/playList/${currentVideoEntry}`));
+            console.error("author does not allow playing this outside youtube, removing video from playlist: ", currentVideoEntry);
+        }
     }
 
     const handleStart = () => {
