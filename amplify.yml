@@ -12,16 +12,3 @@ frontend:
   cache:
     paths:
       - client/node_modules/**/*
-
-backend:
-  phases:
-    build:
-      commands:
-        - npm --prefix ./server install ./server
-  artifacts:
-    baseDirectory: server
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - server/node_modules/**/*
