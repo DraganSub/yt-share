@@ -1,7 +1,6 @@
 import React from "react";
-import { remove, ref, update, push } from "firebase/database";
-import { database } from "../../utils/firebase";
-import { playlistVideoToUsedVideoObject } from "../../utils/utils";
+import { removeData, updateData, pushData } from "../../db";
+import { playlistVideoToUsedVideoObject } from "../../utils";
 import { MusicWave } from "../common";
 import { SavedPlaylistPlayButtonIcon } from "../icons/SavedPlaylistPlayButtonIcon";
 import { SavedPlaylistRemoveButtonIcon } from "../icons/SavedPlaylistRemoveButtonIcon";
@@ -49,11 +48,11 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
                 if (entry[1].playlistId === playlistId || entry[1].playlistId === playlistItem.playlistId) {
                     entryId = entry[0];
                 } else if (entry[1].isPlaylistActive) {
-                    update(ref(database, `youtubeData/playListList/${entry[0]}`), { isPlaylistActive: false });
+                    updateData(`youtubeData/playListList/${entry[0]}`, { isPlaylistActive: false })
                 }
             })
-            await remove(ref(database, `youtubeData/playList`))
-            await update(ref(database, `youtubeData/playListList/${entryId}`), { isPlaylistActive: true });
+            await removeData(`youtubeData/playList`);
+            await updateData(`youtubeData/playListList/${entryId}`, { isPlaylistActive: true })
             firstVideoId = playlistData[0].videoId;
             playlistData.forEach(video => {
                 addToPlaylist(video)
@@ -65,11 +64,11 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
     }
 
     const replaceCurrentVideo = async (videoId) => {
-        await update(ref(database, "youtubeData/"), { specificVideo: videoId, currentTime: 0, isPlaying: true })
+        await updateData("youtubeData/", { specificVideo: videoId, currentTime: 0, isPlaying: true });
     }
 
     const addToPlaylist = async (video) => {
-        await push(ref(database, "youtubeData/playList"), video)
+        await pushData("youtubeData/playList", video);
     }
 
     const removePlaylistFromList = async () => {
@@ -82,14 +81,14 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
             }
         })
         if (!playlistItem.isPlaylistActive && entryId) {
-            await remove(ref(database, `youtubeData/playListList/${entryId}`));
+            await removeData(`youtubeData/playListList/${entryId}`);
         } else if (playlistItem.isPlaylistActive && entryId) {
             if (Object.values(allPlaylists).length > currentPlaylistIndex + 1) {
                 await replaceCurrentPlaylist(Object.values(allPlaylists)[currentPlaylistIndex + 1].playlistId);
             } else {
                 await replaceCurrentPlaylist(Object.values(allPlaylists)[0].playlistId);
             }
-            await remove(ref(database, `youtubeData/playListList/${entryId}`));
+            await removeData(`youtubeData/playListList/${entryId}`);
         }
     }
 

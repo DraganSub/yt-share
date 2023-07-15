@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { push, ref, remove } from "firebase/database";
-import { database } from "../../utils/firebase";
-import { playlistVideoToUsedVideoObject } from "../../utils/utils";
+import { pushData, removeData } from "../../db";
+import { playlistVideoToUsedVideoObject } from "../../utils";
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
@@ -37,12 +36,12 @@ export default function AddWholePlaylist({ setIsOpen }) {
             playlistId: playlistId,
             playlistImg: fetchedVideos[0].thumbnailUrl
         }
-        await push(ref(database, "youtubeData/playListList"), playlistObject)
+        await pushData("youtubeData/playListList", playlistObject)
         setIsOpen(false);
     }
 
     const removeAll = async () => {
-        await remove(ref(database, `youtubeData/playList`))
+        await removeData(`youtubeData/playList`);
     }
 
     return <div className="add-pl-form">

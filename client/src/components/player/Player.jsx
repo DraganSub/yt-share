@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useRef } from "react";
 import ReactPlayer from 'react-player'
-import { database, databaseMessengerId } from "../../utils/firebase";
-import { update, ref, remove } from "firebase/database";
+import { databaseMessengerId, updateData, removeData, pushData } from "../../db";
 import { VolumeSlider } from ".";
+import { playlistVideoToUsedVideoObject } from "../../utils";
 import VolumeControls from "./VideoControls";
+
+const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
 export default function Player({ databaseData }) {
     const player = useRef(null);
@@ -18,7 +20,7 @@ export default function Player({ databaseData }) {
 
     const handleSeek = async (seconds) => {
         if (!isTransitioning && databaseMessengerId === databaseData?.mainMessagingSenderId) {
-            await update(ref(database, "youtubeData/"), { currentTime: seconds.playedSeconds })
+            await updateData("youtubeData/", { currentTime: seconds.playedSeconds });
         }
     }
 
@@ -38,37 +40,96 @@ export default function Player({ databaseData }) {
         setIsTransitioning(true);
         //block handle seek for updating current time with wrong values
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
-            await update(ref(database, "youtubeData/"), { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId })
-            await update(ref(database, "youtubeData/"), { currentTime: 0 });
-            await update(ref(database, "youtubeData/"), { isPlaying: true })
+            await updateData("youtubeData/", { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId });
+            await updateData("youtubeData/", { currentTime: 0 });
+            await updateData("youtubeData/", { isPlaying: true });
+        } else if (databaseData.autoPlaylist && Object.entries(databaseData.playListList).length > 1) {
+            //if autoplaylist is set to true, we need to direct user to another playlist if they exist
+            //if there are playlist+1 direct to that playlist, if !playlist+1 direct to first playlist
+            let activePlaylistIndex;
+            Object.entries(databaseData.playListList).forEach((entry, i) => {
+                //find active playlist
+                if (entry[1].isPlaylistActive) {
+                    activePlaylistIndex = i;
+                }
+            })
+            if (Object.values(databaseData.playListList)[activePlaylistIndex + 1]) {
+                replaceCurrentPlaylist(Object.values(databaseData.playListList)[activePlaylistIndex + 1].playlistId)
+            } else {
+                replaceCurrentPlaylist(Object.values(databaseData.playListList)[0].playlistId)
+            }
         } else {
-            await update(ref(database, "youtubeData/"), { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
+            await updateData("youtubeData/", { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true });
         }
         setIsTransitioning(false);
 
         if (event === 150 && currentVideoEntry) {
             //remove video from playlist with 150 error from playlist
             //current playing video already should be next so we can safely remove video from playlist
-            await remove(ref(database, `youtubeData/playList/${currentVideoEntry}`));
+            await removeData(`youtubeData/playList/${currentVideoEntry}`);
             console.error("author does not allow playing this outside youtube, removing video from playlist: ", currentVideoEntry);
         }
+    }
+
+    const fetchData = async (playlistId) => {
+        try {
+            const response = await fetch(
+                `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&playlistId=${playlistId}&key=${API_KEY}`
+            );
+            const data = await response.json();
+            if (data.items.length > 0) {
+                const videosThatWork = data.items.filter(video => video.snippet.title !== "Deleted video" && video.snippet.title !== "Private video");
+                return videosThatWork.map(video => playlistVideoToUsedVideoObject(video));
+            }
+        } catch (error) {
+            console.error('Error fetching playlist data:', error);
+            return [];
+        }
+    }
+
+    const replaceCurrentPlaylist = async (playlistId = null) => {
+        let firstVideoId = null;
+        const playlistData = await fetchData(playlistId);
+        if (playlistData.length > 0) {
+            let entryId = null;
+
+            Object.entries(databaseData.playListList).forEach((entry, i) => {
+                if (entry[1].playlistId === playlistId) {
+                    entryId = entry[0];
+                } else if (entry[1].isPlaylistActive) {
+                    updateData(`youtubeData/playListList/${entry[0]}`, { isPlaylistActive: false });
+                }
+            })
+            await removeData(`youtubeData/playList`);
+            await updateData(`youtubeData/playListList/${entryId}`, { isPlaylistActive: true });
+            firstVideoId = playlistData[0].videoId;
+            playlistData.forEach(video => {
+                addToPlaylist(video)
+            });
+            if (firstVideoId) {
+                replaceCurrentVideo(firstVideoId);
+            }
+        }
+    }
+
+    const addToPlaylist = async (video) => {
+        await pushData("youtubeData/playList", video);
+    }
+
+    const replaceCurrentVideo = async (videoId) => {
+        await updateData("youtubeData/", { specificVideo: videoId, currentTime: 0, isPlaying: true });
     }
 
     const handleStart = () => {
         player.current.seekTo(databaseData.currentTime);
     }
 
-    const onPause = async (event) => {
-        console.log("stop event", event)
-        console.log("stopping")
-        await update(ref(database, "youtubeData/"), { isPlaying: false })
+    const onPause = async () => {
+        await updateData("youtubeData/", { isPlaying: false });
     }
 
-    const onPlay = async (event) => {
-        console.log("play event", event)
-        console.log("playing")
-        await update(ref(database, "youtubeData/"), { isPlaying: true })
-
+    const onPlay = async () => {
+        await updateData("youtubeData/", { isPlaying: true });
     }
 
     return (

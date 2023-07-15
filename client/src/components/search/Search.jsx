@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { VideoCard } from "..";
-import { push, ref } from "firebase/database";
-import { database } from '../../utils/firebase';
-import { toUsedVideoObject } from '../../utils/utils';
+import { pushData } from '../../db';
+import { toUsedVideoObject } from '../../utils';
 import { SearchbarSearchIcon } from '../icons/SearchbarSearchIcon';
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
@@ -42,7 +41,7 @@ export default function Search() {
     };
 
     const addToPlaylist = async (video) => {
-        await push(ref(database, "youtubeData/playList"), video)
+        await pushData("youtubeData/playList", video);
     }
 
     return (

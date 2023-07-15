@@ -1,7 +1,7 @@
 import { Player, Playlist, SavedPlaylists, SearchSection } from "./components";
 import { useEffect, useState } from "react";
-import { database, databaseMessengerId } from "./utils/firebase";
-import { onValue, ref, update } from "firebase/database";
+import { database, databaseMessengerId, updateData } from "./db";
+import { onValue, ref } from "firebase/database";
 import "./styles/style.css";
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
     onValue(ref(database, "youtubeData/"), (snapshot) => {
       const data = snapshot.val();
       if (data.mainMessagingSenderId === "") {
-        update(ref(database, "youtubeData/"), { mainMessagingSenderId: databaseMessengerId })
+        updateData("youtubeData/", { mainMessagingSenderId: databaseMessengerId })
         setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
       } else {
         setDatabaseData(data);
