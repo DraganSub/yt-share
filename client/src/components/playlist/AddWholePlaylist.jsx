@@ -36,12 +36,12 @@ export default function AddWholePlaylist({ setIsOpen }) {
             playlistId: playlistId,
             playlistImg: fetchedVideos[0].thumbnailUrl
         }
-        await pushData("youtubeData/playListList", playlistObject)
+        await pushData(`rooms/${localStorage.getItem("room_key")}/playListList`, playlistObject)
         setIsOpen(false);
     }
 
     const removeAll = async () => {
-        await removeData(`youtubeData/playList`);
+        await removeData(`rooms/${localStorage.getItem("room_key")}/playList`);
     }
 
     return <div className="add-pl-form">

@@ -39,7 +39,7 @@ function PlaylistToggler({ databaseData }) {
         const currentToggleState = isChecked;
         setIsChecked(!currentToggleState);
         //call function that changes state in db
-        await updateData("youtubeData/", { autoPlaylist: !currentToggleState });
+        await updateData(`rooms/${localStorage.getItem("room_key")}`, { autoPlaylist: !currentToggleState });
     };
 
     return (

@@ -11,7 +11,7 @@ export default function PlaylistItemCard({ playlist }) {
             playlistId: playlist.playlistId,
             playlistImg: playlist.thumbnailUrl
         }
-        await pushData("youtubeData/playListList", playlistObject)
+        await pushData(`rooms/${localStorage.getItem("room_key")}/playListList`, playlistObject)
     }
 
     return < div className="pos-rel play-hov" >

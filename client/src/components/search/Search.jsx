@@ -41,7 +41,7 @@ export default function Search() {
     };
 
     const addToPlaylist = async (video) => {
-        await pushData("youtubeData/playList", video);
+        await pushData(`rooms/${localStorage.getItem("room_key")}/playList`, video);
     }
 
     return (

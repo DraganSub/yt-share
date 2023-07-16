@@ -48,11 +48,11 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
                 if (entry[1].playlistId === playlistId || entry[1].playlistId === playlistItem.playlistId) {
                     entryId = entry[0];
                 } else if (entry[1].isPlaylistActive) {
-                    updateData(`youtubeData/playListList/${entry[0]}`, { isPlaylistActive: false })
+                    updateData(`rooms/${localStorage.getItem("room_key")}/playListList/${entry[0]}`, { isPlaylistActive: false })
                 }
             })
-            await removeData(`youtubeData/playList`);
-            await updateData(`youtubeData/playListList/${entryId}`, { isPlaylistActive: true })
+            await removeData(`rooms/${localStorage.getItem("room_key")}/playList`);
+            await updateData(`rooms/${localStorage.getItem("room_key")}/playListList/${entryId}`, { isPlaylistActive: true })
             firstVideoId = playlistData[0].videoId;
             playlistData.forEach(video => {
                 addToPlaylist(video)
@@ -64,11 +64,11 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
     }
 
     const replaceCurrentVideo = async (videoId) => {
-        await updateData("youtubeData/", { specificVideo: videoId, currentTime: 0, isPlaying: true });
+        await updateData(`rooms/${localStorage.getItem("room_key")}`, { specificVideo: videoId, currentTime: 0, isPlaying: true });
     }
 
     const addToPlaylist = async (video) => {
-        await pushData("youtubeData/playList", video);
+        await pushData(`rooms/${localStorage.getItem("room_key")}/playList`, video);
     }
 
     const removePlaylistFromList = async () => {
@@ -81,14 +81,14 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
             }
         })
         if (!playlistItem.isPlaylistActive && entryId) {
-            await removeData(`youtubeData/playListList/${entryId}`);
+            await removeData(`rooms/${localStorage.getItem("room_key")}/playListList/${entryId}`);
         } else if (playlistItem.isPlaylistActive && entryId) {
             if (Object.values(allPlaylists).length > currentPlaylistIndex + 1) {
                 await replaceCurrentPlaylist(Object.values(allPlaylists)[currentPlaylistIndex + 1].playlistId);
             } else {
                 await replaceCurrentPlaylist(Object.values(allPlaylists)[0].playlistId);
             }
-            await removeData(`youtubeData/playListList/${entryId}`);
+            await removeData(`rooms/${localStorage.getItem("room_key")}/playListList/${entryId}`);
         }
     }
 

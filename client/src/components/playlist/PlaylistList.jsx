@@ -10,7 +10,7 @@ export default function PlaylistList(data) {
   }
 
   const playVideo = async (video) => {
-    await updateData("youtubeData/", { specificVideo: video.videoId, currentTime: 0, isPlaying: true });
+    await updateData(`rooms/${localStorage.getItem("room_key")}`, { specificVideo: video.videoId, currentTime: 0, isPlaying: true });
   }
 
   const removeVideoFromPlaylist = async (video) => {
@@ -24,14 +24,14 @@ export default function PlaylistList(data) {
     })
 
     if (entryId) {
-      await removeData(`youtubeData/playList/${entryId}`);
+      await removeData(`rooms/${localStorage.getItem("room_key")}/playList/${entryId}`);
     }
 
     if (video.videoId === databaseData.specificVideo) {
       if (Object.values(databaseData.playList).length > currentVideoIndex + 1) {
-        await updateData("youtubeData/", { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true });
+        await updateData(`rooms/${localStorage.getItem("room_key")}`, { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true });
       } else {
-        await updateData("youtubeData/", { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
+        await updateData(`rooms/${localStorage.getItem("room_key")}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
       }
     }
   }
