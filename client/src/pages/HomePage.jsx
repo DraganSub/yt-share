@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { onValue, ref, onDisconnect } from "firebase/database";
-import { database, databaseMessengerId, updateData } from "../db";
+import { useEffect, useState, useRef } from "react";
+import { onValue, ref, onDisconnect, set, get, onUnmounted, child } from "firebase/database";
+import { database, databaseMessengerId, disconnectListener, updateData } from "../db";
 import { useNavigate } from "react-router-dom";
 import { getRoomPath } from "../utils";
 import { Player, Playlist, SavedPlaylists, SearchSection } from "../components";
@@ -8,7 +8,6 @@ import "../styles/style.css";
 
 export default function HomePage() {
     const [databaseData, setDatabaseData] = useState(null);
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,25 +17,65 @@ export default function HomePage() {
 
         window.addEventListener('pausebackgroundtabs', preventPauseBackgroundTabs, true);
 
-        onValue(ref(database, `${getRoomPath()}`), (snapshot) => {
+        const disposer = onValue(ref(database, `${getRoomPath()}`), async (snapshot) => {
             const data = snapshot.val();
-            // if (data.mainMessagingSenderId === "") {
-            //     updateData("youtubeData/", { mainMessagingSenderId: databaseMessengerId })
-            //     setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
-            // } else {
-            setDatabaseData(data);
-            //}
+            console.log(data);
+            if ((data && !data.mainMessagingSenderId && localStorage.getItem("room_key")) || (data && data.mainMessagingSenderId === "" && localStorage.getItem("room_key"))) {
+                await updateData(`${getRoomPath()}`, { mainMessagingSenderId: databaseMessengerId })
+                disconnectListener();
+                setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
+            } else {
+                setDatabaseData(data);
+            }
         })
 
-        // onValue(ref(database, "/"), snapshot => {
-        //     //get all avaialble rooms
-        //     console.log(snapshot.val())
+        // onDisconnect(() => {
+        //     if (databaseData.mainMessagingSenderId === databaseMessengerId && databaseData) {
+        //         ref(database, `${getRoomPath()}/mainMessagingSenderId`).set("");
+        //     }
         // })
-    }, [])
+
+
+        return () => {
+            // disposer();
+            //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
+            //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
+            //updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
+            disposer();
+            disposers();
+            console.log("remove field ")
+        }
+
+    }, [window.location.pathname])
+
+
+
+    async function handleBeforeUnload() {
+        console.log("handle before unload")
+        console.log(databaseData);
+    }
+
+    async function disposers() {
+        // await get(ref(database, `${getRoomPath()}`)).then((snapshot) => {
+        //     const values = snapshot.val();
+        //     if (values.mainMessagingSenderId === databaseMessengerId) {
+        //         
+        //     }
+        // })
+        if (databaseData.mainMessagingSenderId === databaseMessengerId) {
+            await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
+        }
+        localStorage.removeItem("room_key");
+    }
 
     const navigateToLanding = async () => {
-        localStorage.removeItem("room_key");
-        //await updateData("youtubeData/", { mainMessagingSenderId: "" })
+        //await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
+        //localStorage.removeItem("room_key");
+        // disposer();
+        // if (databaseData?.mainMessagingSenderId === databaseMessengerId) {
+        //     await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
+        // }
+
         navigate("/");
     }
 
