@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { VideoCard } from "..";
 import { pushData } from '../../db';
-import { toUsedVideoObject } from '../../utils';
+import { toUsedVideoObject, getRoomPath } from '../../utils';
 import { SearchbarSearchIcon } from '../icons/SearchbarSearchIcon';
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
@@ -41,7 +41,7 @@ export default function Search() {
     };
 
     const addToPlaylist = async (video) => {
-        await pushData("youtubeData/playList", video);
+        await pushData(`${getRoomPath()}/playList`, video);
     }
 
     return (

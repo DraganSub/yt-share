@@ -1,15 +1,23 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onDisconnect } from "firebase/database";
-import { createUuidv4 } from "../utils";
+import { getDatabase, ref, onDisconnect, update } from "firebase/database";
+import { createUuidv4, getRoomPath } from "../utils";
 
 const firebaseConfig = {
     databaseURL: process.env.REACT_APP_FIREBASE_CONNECTION,
-    messagingSenderId: createUuidv4()
+    //messagingSenderId: createUuidv4()
 }
 
 const app = initializeApp(firebaseConfig);
 export const database = getDatabase(app);
 
-export const databaseMessengerId = database.app._options.messagingSenderId;
+export const databaseMessengerId = createUuidv4();
 
-onDisconnect(ref(database, "youtubeData/mainMessagingSenderId")).set("");
+
+// export function disconnectListener() {
+//     console.log("disconnect listener")
+//     onDisconnect(ref(database, `${getRoomPath()}/mainMessagingSenderId`)).set("");
+// }
+// onDisconnect(ref(database, `${getRoomPath()}/mainMessagingSenderId`)).update("").then(() => {
+//     console.log("remove field on disconnect")
+// })
+//handler for exiting window

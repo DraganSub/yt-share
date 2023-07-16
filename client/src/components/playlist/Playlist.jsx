@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { updateData } from "../../db";
 import { AddPlaylistAccordion, PlaylistList } from ".";
+import { getRoomPath } from "../../utils";
 
 export default function Playlist({ databaseData }) {
     return <>
@@ -39,7 +40,7 @@ function PlaylistToggler({ databaseData }) {
         const currentToggleState = isChecked;
         setIsChecked(!currentToggleState);
         //call function that changes state in db
-        await updateData("youtubeData/", { autoPlaylist: !currentToggleState });
+        await updateData(`${getRoomPath()}`, { autoPlaylist: !currentToggleState });
     };
 
     return (

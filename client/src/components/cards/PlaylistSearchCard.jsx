@@ -1,6 +1,6 @@
 import React from "react";
 import { pushData } from "../../db";
-import { trimVideoTxt } from "../../utils";
+import { trimVideoTxt, getRoomPath } from "../../utils";
 import { MusicWave } from "../common"
 export default function PlaylistItemCard({ playlist }) {
 
@@ -11,7 +11,7 @@ export default function PlaylistItemCard({ playlist }) {
             playlistId: playlist.playlistId,
             playlistImg: playlist.thumbnailUrl
         }
-        await pushData("youtubeData/playListList", playlistObject)
+        await pushData(`${getRoomPath()}/playListList`, playlistObject)
     }
 
     return < div className="pos-rel play-hov" >

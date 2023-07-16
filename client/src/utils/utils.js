@@ -41,3 +41,8 @@ export function createUuidv4() {
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16) // eslint-disable-line
     );
 }
+
+export function getRoomPath() {
+    const key = localStorage.getItem("room_key");
+    return `rooms/${key}`
+}
