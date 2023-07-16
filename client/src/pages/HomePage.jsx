@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { onValue, ref, onDisconnect, set, get, onUnmounted, child } from "firebase/database";
-import { database, databaseMessengerId, disconnectListener, updateData } from "../db";
+import { onValue, ref, onDisconnect, set, get, child } from "firebase/database";
+import { database, databaseMessengerId, updateData } from "../db";
 import { useNavigate } from "react-router-dom";
 import { getRoomPath } from "../utils";
 import { Player, Playlist, SavedPlaylists, SearchSection } from "../components";
@@ -20,13 +20,13 @@ export default function HomePage() {
         const disposer = onValue(ref(database, `${getRoomPath()}`), async (snapshot) => {
             const data = snapshot.val();
             console.log(data);
-            if ((data && !data.mainMessagingSenderId && localStorage.getItem("room_key")) || (data && data.mainMessagingSenderId === "" && localStorage.getItem("room_key"))) {
-                await updateData(`${getRoomPath()}`, { mainMessagingSenderId: databaseMessengerId })
-                disconnectListener();
-                setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
-            } else {
-                setDatabaseData(data);
-            }
+            // if ((data && !data.mainMessagingSenderId && localStorage.getItem("room_key")) || (data && data.mainMessagingSenderId === "" && localStorage.getItem("room_key"))) {
+            //     await updateData(`${getRoomPath()}`, { mainMessagingSenderId: databaseMessengerId })
+            //     disconnectListener();
+            //     setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
+            // } else {
+            setDatabaseData(data);
+            // }
         })
 
         // onDisconnect(() => {
@@ -36,37 +36,40 @@ export default function HomePage() {
         // })
 
 
+        // return () => {
+        //     // disposer();
+        //     //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
+        //     //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
+        //     //updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
+        //     disposer();
+        //     disposers();
+        //     console.log("remove field ")
+        // }
         return () => {
-            // disposer();
-            //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
-            //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
-            //updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
-            disposer();
-            disposers();
-            console.log("remove field ")
+            localStorage.removeItem("room_key");
         }
 
-    }, [window.location.pathname])
+    }, [])
 
 
 
-    async function handleBeforeUnload() {
-        console.log("handle before unload")
-        console.log(databaseData);
-    }
+    // async function handleBeforeUnload() {
+    //     console.log("handle before unload")
+    //     console.log(databaseData);
+    // }
 
-    async function disposers() {
-        // await get(ref(database, `${getRoomPath()}`)).then((snapshot) => {
-        //     const values = snapshot.val();
-        //     if (values.mainMessagingSenderId === databaseMessengerId) {
-        //         
-        //     }
-        // })
-        if (databaseData.mainMessagingSenderId === databaseMessengerId) {
-            await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
-        }
-        localStorage.removeItem("room_key");
-    }
+    // async function disposers() {
+    //     // await get(ref(database, `${getRoomPath()}`)).then((snapshot) => {
+    //     //     const values = snapshot.val();
+    //     //     if (values.mainMessagingSenderId === databaseMessengerId) {
+    //     //         
+    //     //     }
+    //     // })
+    //     if (databaseData.mainMessagingSenderId === databaseMessengerId) {
+    //         await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
+    //     }
+    //     localStorage.removeItem("room_key");
+    // }
 
     const navigateToLanding = async () => {
         //await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
@@ -75,7 +78,6 @@ export default function HomePage() {
         // if (databaseData?.mainMessagingSenderId === databaseMessengerId) {
         //     await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
         // }
-
         navigate("/");
     }
 

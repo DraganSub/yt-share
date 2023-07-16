@@ -13,10 +13,10 @@ export const database = getDatabase(app);
 export const databaseMessengerId = createUuidv4();
 
 
-export function disconnectListener() {
-    console.log("disconnect listener")
-    onDisconnect(ref(database, `${getRoomPath()}/mainMessagingSenderId`)).set("");
-}
+// export function disconnectListener() {
+//     console.log("disconnect listener")
+//     onDisconnect(ref(database, `${getRoomPath()}/mainMessagingSenderId`)).set("");
+// }
 // onDisconnect(ref(database, `${getRoomPath()}/mainMessagingSenderId`)).update("").then(() => {
 //     console.log("remove field on disconnect")
 // })
