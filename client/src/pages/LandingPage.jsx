@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, child, push } from "firebase/database";
 import { database, pushData } from "../db";
 
 export default function LandingPage() {
@@ -10,7 +10,7 @@ export default function LandingPage() {
     const [availableRooms, setAvailableRooms] = useState(null)
 
     useEffect(() => {
-        const dispose = onValue(ref(database, "/rooms"), (snapshot) => {
+        const dispose = onValue(ref(database, "/rooms-list"), (snapshot) => {
             const roomList = snapshot.val();
             if (roomList) {
                 setAvailableRooms(roomList);
@@ -32,7 +32,7 @@ function RoomList({ availableRooms }) {
         return;
     }
 
-    const joinRoom = (event, roomId) => {
+    const joinRoom = (roomId) => {
         localStorage.setItem("room_key", roomId);
         navigate(`/${roomId}`);
     }
@@ -44,7 +44,7 @@ function RoomList({ availableRooms }) {
                     <div>
                         {room[1].name}
                     </div>
-                    <button onClick={(e) => joinRoom(e, room[0])}>
+                    <button onClick={() => joinRoom(room[1].key)}>
                         Join
                     </button>
                 </div>
@@ -58,7 +58,8 @@ function AddRoom() {
 
     const createRoom = async () => {
         if (roomName) {
-            await pushData("rooms/", { "name": roomName })
+            const key = push(ref(database, "/rooms"), { "name": roomName }).key;
+            await pushData("rooms-list", { "name": roomName, "key": key });
         }
     }
 
