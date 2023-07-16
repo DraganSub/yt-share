@@ -46,6 +46,7 @@ export default function HomePage() {
         //     console.log("remove field ")
         // }
         return () => {
+            disposer();
             localStorage.removeItem("room_key");
         }
 

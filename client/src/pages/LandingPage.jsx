@@ -10,12 +10,15 @@ export default function LandingPage() {
     const [availableRooms, setAvailableRooms] = useState(null)
 
     useEffect(() => {
-        onValue(ref(database, "/rooms"), (snapshot) => {
+        const dispose = onValue(ref(database, "/rooms"), (snapshot) => {
             const roomList = snapshot.val();
             if (roomList) {
                 setAvailableRooms(roomList);
             }
         });
+        return () => {
+            dispose();
+        }
     }, [])
 
     return <div><RoomList availableRooms={availableRooms} /><AddRoom /> </div>
