@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { pushData, removeData } from "../../db";
-import { playlistVideoToUsedVideoObject } from "../../utils";
+import { playlistVideoToUsedVideoObject, getRoomPath } from "../../utils";
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
 
@@ -36,12 +36,12 @@ export default function AddWholePlaylist({ setIsOpen }) {
             playlistId: playlistId,
             playlistImg: fetchedVideos[0].thumbnailUrl
         }
-        await pushData(`rooms/${localStorage.getItem("room_key")}/playListList`, playlistObject)
+        await pushData(`${getRoomPath()}/playListList`, playlistObject)
         setIsOpen(false);
     }
 
     const removeAll = async () => {
-        await removeData(`rooms/${localStorage.getItem("room_key")}/playList`);
+        await removeData(`${getRoomPath()}/playList`);
     }
 
     return <div className="add-pl-form">

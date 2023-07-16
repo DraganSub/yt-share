@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { onValue, ref, onDisconnect } from "firebase/database";
 import { database, databaseMessengerId, updateData } from "../db";
 import { useNavigate } from "react-router-dom";
+import { getRoomPath } from "../utils";
 import { Player, Playlist, SavedPlaylists, SearchSection } from "../components";
 import "../styles/style.css";
 
@@ -17,7 +18,7 @@ export default function HomePage() {
 
         window.addEventListener('pausebackgroundtabs', preventPauseBackgroundTabs, true);
 
-        onValue(ref(database, `rooms/${localStorage.getItem("room_key")}`), (snapshot) => {
+        onValue(ref(database, `${getRoomPath()}`), (snapshot) => {
             const data = snapshot.val();
             // if (data.mainMessagingSenderId === "") {
             //     updateData("youtubeData/", { mainMessagingSenderId: databaseMessengerId })

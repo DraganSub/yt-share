@@ -3,7 +3,7 @@ import { useRef } from "react";
 import ReactPlayer from 'react-player'
 import { databaseMessengerId, updateData, removeData, pushData } from "../../db";
 import { VolumeSlider } from ".";
-import { playlistVideoToUsedVideoObject } from "../../utils";
+import { playlistVideoToUsedVideoObject, getRoomPath } from "../../utils";
 import VolumeControls from "./VideoControls";
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
@@ -21,7 +21,7 @@ export default function Player({ databaseData }) {
     const handleSeek = async (seconds) => {
         //&& databaseMessengerId === databaseData?.mainMessagingSenderId
         if (!isTransitioning) {
-            await updateData(`rooms/${localStorage.getItem("room_key")}`, { currentTime: seconds.playedSeconds });
+            await updateData(`${getRoomPath()}`, { currentTime: seconds.playedSeconds });
         }
     }
 
@@ -41,9 +41,9 @@ export default function Player({ databaseData }) {
         setIsTransitioning(true);
         //block handle seek for updating current time with wrong values
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
-            await updateData(`rooms/${localStorage.getItem("room_key")}`, { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId });
-            await updateData(`rooms/${localStorage.getItem("room_key")}`, { currentTime: 0 });
-            await updateData(`rooms/${localStorage.getItem("room_key")}`, { isPlaying: true });
+            await updateData(`${getRoomPath()}`, { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId });
+            await updateData(`${getRoomPath()}`, { currentTime: 0 });
+            await updateData(`${getRoomPath()}`, { isPlaying: true });
         } else if (databaseData.autoPlaylist && Object.entries(databaseData.playListList).length > 1) {
             //if autoplaylist is set to true, we need to direct user to another playlist if they exist
             //if there are playlist+1 direct to that playlist, if !playlist+1 direct to first playlist
@@ -60,14 +60,14 @@ export default function Player({ databaseData }) {
                 replaceCurrentPlaylist(Object.values(databaseData.playListList)[0].playlistId)
             }
         } else {
-            await updateData(`rooms/${localStorage.getItem("room_key")}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true });
+            await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true });
         }
         setIsTransitioning(false);
 
         if (event === 150 && currentVideoEntry) {
             //remove video from playlist with 150 error from playlist
             //current playing video already should be next so we can safely remove video from playlist
-            await removeData(`rooms/${localStorage.getItem("room_key")}/playList/${currentVideoEntry}`);
+            await removeData(`${getRoomPath()}/playList/${currentVideoEntry}`);
             console.error("author does not allow playing this outside youtube, removing video from playlist: ", currentVideoEntry);
         }
     }
@@ -98,11 +98,11 @@ export default function Player({ databaseData }) {
                 if (entry[1].playlistId === playlistId) {
                     entryId = entry[0];
                 } else if (entry[1].isPlaylistActive) {
-                    updateData(`rooms/${localStorage.getItem("room_key")}/playListList/${entry[0]}`, { isPlaylistActive: false });
+                    updateData(`${getRoomPath()}/playListList/${entry[0]}`, { isPlaylistActive: false });
                 }
             })
-            await removeData(`rooms/${localStorage.getItem("room_key")}/playList`);
-            await updateData(`rooms/${localStorage.getItem("room_key")}/playListList/${entryId}`, { isPlaylistActive: true });
+            await removeData(`${getRoomPath()}/playList`);
+            await updateData(`${getRoomPath()}/playListList/${entryId}`, { isPlaylistActive: true });
             firstVideoId = playlistData[0].videoId;
             playlistData.forEach(video => {
                 addToPlaylist(video)
@@ -114,11 +114,11 @@ export default function Player({ databaseData }) {
     }
 
     const addToPlaylist = async (video) => {
-        await pushData(`rooms/${localStorage.getItem("room_key")}/playList`, video);
+        await pushData(`${getRoomPath()}/playList`, video);
     }
 
     const replaceCurrentVideo = async (videoId) => {
-        await updateData(`rooms/${localStorage.getItem("room_key")}`, { specificVideo: videoId, currentTime: 0, isPlaying: true });
+        await updateData(`${getRoomPath()}`, { specificVideo: videoId, currentTime: 0, isPlaying: true });
     }
 
     const handleStart = () => {
@@ -126,11 +126,11 @@ export default function Player({ databaseData }) {
     }
 
     const onPause = async () => {
-        await updateData(`rooms/${localStorage.getItem("room_key")}`, { isPlaying: false });
+        await updateData(`${getRoomPath()}`, { isPlaying: false });
     }
 
     const onPlay = async () => {
-        await updateData(`rooms/${localStorage.getItem("room_key")}`, { isPlaying: true });
+        await updateData(`${getRoomPath()}`, { isPlaying: true });
     }
 
     return (
