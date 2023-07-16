@@ -3,7 +3,7 @@ import { getDatabase, ref, onDisconnect } from "firebase/database";
 import { createUuidv4 } from "../utils";
 
 const firebaseConfig = {
-    databaseURL: "https://share-c7deb-default-rtdb.europe-west1.firebasedatabase.app/",
+    databaseURL: process.env.REACT_APP_FIREBASE_CONNECTION,
     //messagingSenderId: createUuidv4()
 }
 
