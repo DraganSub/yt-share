@@ -1,5 +1,5 @@
 import { updateData, removeData } from "../../db";
-import { getRoomPath } from "../../utils";
+import { getRoomPath, createTimeStamp } from "../../utils";
 import { VideoPlaylistCard } from "../cards";
 
 export default function PlaylistList(data) {
@@ -11,7 +11,7 @@ export default function PlaylistList(data) {
   }
 
   const playVideo = async (video) => {
-    await updateData(`${getRoomPath()}`, { specificVideo: video.videoId, currentTime: 0, isPlaying: true });
+    await updateData(`${getRoomPath()}`, { specificVideo: video.videoId, videoTimeStamp: createTimeStamp(), isPlaying: true });
   }
 
   const removeVideoFromPlaylist = async (video) => {
@@ -30,9 +30,9 @@ export default function PlaylistList(data) {
 
     if (video.videoId === databaseData.specificVideo) {
       if (Object.values(databaseData.playList).length > currentVideoIndex + 1) {
-        await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, currentTime: 0, isPlaying: true });
+        await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId, videoTimeStamp: createTimeStamp(), isPlaying: true });
       } else {
-        await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true })
+        await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, videoTimeStamp: createTimeStamp(), isPlaying: true })
       }
     }
   }

@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onDisconnect, update } from "firebase/database";
+import { getDatabase, ref, onDisconnect, update, serverTimestamp } from "firebase/database";
 import { createUuidv4, getRoomPath } from "../utils";
 
 const firebaseConfig = {
@@ -12,6 +12,9 @@ export const database = getDatabase(app);
 
 export const databaseMessengerId = createUuidv4();
 
+export const createTimestamp = () => {
+    return serverTimestamp();
+}
 
 // export function disconnectListener() {
 //     console.log("disconnect listener")

@@ -3,7 +3,7 @@ import { useRef } from "react";
 import ReactPlayer from 'react-player'
 import { databaseMessengerId, updateData, removeData, pushData } from "../../db";
 import { VolumeSlider } from ".";
-import { playlistVideoToUsedVideoObject, getRoomPath } from "../../utils";
+import { playlistVideoToUsedVideoObject, getRoomPath, createTimeStamp, calculateDiffBetweenTimestampAndNow } from "../../utils";
 import VolumeControls from "./VideoControls";
 
 const API_KEY = 'AIzaSyAX9r_Id8dEmOFAF2MPpFhim-Trf4vGdco';
@@ -20,9 +20,9 @@ export default function Player({ databaseData }) {
 
     const handleSeek = async (seconds) => {
         //&& databaseMessengerId === databaseData?.mainMessagingSenderId
-        if (!isTransitioning) {
-            await updateData(`${getRoomPath()}`, { currentTime: seconds.playedSeconds });
-        }
+        // if (!isTransitioning) {
+        //     await updateData(`${getRoomPath()}`, { currentTime: seconds.playedSeconds });
+        // }
     }
 
     const handleEnd = async (event) => {
@@ -42,7 +42,7 @@ export default function Player({ databaseData }) {
         //block handle seek for updating current time with wrong values
         if (Object.entries(databaseData.playList).length > currentVideoIndex + 1) {
             await updateData(`${getRoomPath()}`, { isPlaying: false, specificVideo: Object.values(databaseData.playList)[currentVideoIndex + 1].videoId });
-            await updateData(`${getRoomPath()}`, { currentTime: 0 });
+            await updateData(`${getRoomPath()}`, { videoTimeStamp: createTimeStamp() });
             await updateData(`${getRoomPath()}`, { isPlaying: true });
         } else if (databaseData.autoPlaylist && Object.entries(databaseData.playListList).length > 1) {
             //if autoplaylist is set to true, we need to direct user to another playlist if they exist
@@ -60,7 +60,7 @@ export default function Player({ databaseData }) {
                 replaceCurrentPlaylist(Object.values(databaseData.playListList)[0].playlistId)
             }
         } else {
-            await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, currentTime: 0, isPlaying: true });
+            await updateData(`${getRoomPath()}`, { specificVideo: Object.values(databaseData.playList)[0].videoId, videoTimeStamp: createTimeStamp(), isPlaying: true });
         }
         setIsTransitioning(false);
 
@@ -118,11 +118,12 @@ export default function Player({ databaseData }) {
     }
 
     const replaceCurrentVideo = async (videoId) => {
-        await updateData(`${getRoomPath()}`, { specificVideo: videoId, currentTime: 0, isPlaying: true });
+        updateData(`${getRoomPath()}`, { specificVideo: videoId, videoTimeStamp: createTimeStamp(), isPlaying: true });
     }
 
     const handleStart = () => {
-        player.current.seekTo(databaseData.currentTime);
+        const timeinseconds = calculateDiffBetweenTimestampAndNow(databaseData.videoTimeStamp)
+        player.current.seekTo(timeinseconds);
     }
 
     const onPause = async () => {
@@ -133,12 +134,20 @@ export default function Player({ databaseData }) {
         await updateData(`${getRoomPath()}`, { isPlaying: true });
     }
 
+    const handleBuffer = () => {
+        console.log("buffer on")
+    }
+
+    const handleBufferEnd = () => {
+        console.log("buffer end")
+    }
+
     return (
         <div className="player pos-rel">
             <ReactPlayer
-                style={{ pointerEvents: "none", WebkitUserSelect: "none", msUserSelect: "none", userSelect: "none" }}
+                //style={{ pointerEvents: "none", WebkitUserSelect: "none", msUserSelect: "none", userSelect: "none" }}
                 playing={databaseData.isPlaying}
-                controls={false}
+                controls={true}
                 url={`https://www.youtube.com/watch?v=${databaseData.specificVideo}`}
                 // onPause={onPause}
                 // onPlay={onPlay}
@@ -146,6 +155,9 @@ export default function Player({ databaseData }) {
                 onEnded={handleEnd}
                 onError={handleEnd}
                 onReady={handleStart}
+                //onBuffer={handleBuffer}
+                // onBufferEnd={handleStart}
+                //onStart={handleStart}
                 muted={isMuted}
                 width={1100}
                 height={665}
@@ -160,7 +172,7 @@ export default function Player({ databaseData }) {
                 }}
                 ref={player}
             />
-            <div className="video-controls-container">
+            {/* <div className="video-controls-container">
                 <VolumeControls
                     onPause={onPause}
                     onPlay={onPlay}
@@ -169,7 +181,7 @@ export default function Player({ databaseData }) {
                     isMuted={isMuted}
                 />
                 <VolumeSlider volume={volume} setVolume={setVolume} setIsMuted={setIsMuted} />
-            </div>
+            </div> */}
         </div>
     );
 };

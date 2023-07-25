@@ -6,6 +6,7 @@ import { getRoomPath } from "../utils";
 import { Player, Playlist, SavedPlaylists, SearchSection } from "../components";
 import "../styles/style.css";
 
+//on video play, save current timestamp of video start, on load video get timestamp now - timestamp, set seek time to that difference
 export default function HomePage() {
     const [databaseData, setDatabaseData] = useState(null);
     const navigate = useNavigate();

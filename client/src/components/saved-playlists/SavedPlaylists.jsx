@@ -1,6 +1,6 @@
 import React from "react";
 import { removeData, updateData, pushData } from "../../db";
-import { playlistVideoToUsedVideoObject, getRoomPath } from "../../utils";
+import { playlistVideoToUsedVideoObject, getRoomPath, createTimeStamp } from "../../utils";
 import { MusicWave } from "../common";
 import { SavedPlaylistPlayButtonIcon } from "../icons/SavedPlaylistPlayButtonIcon";
 import { SavedPlaylistRemoveButtonIcon } from "../icons/SavedPlaylistRemoveButtonIcon";
@@ -64,7 +64,7 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
     }
 
     const replaceCurrentVideo = async (videoId) => {
-        await updateData(`${getRoomPath()}`, { specificVideo: videoId, currentTime: 0, isPlaying: true });
+        await updateData(`${getRoomPath()}`, { specificVideo: videoId, videoTimeStamp: createTimeStamp(), isPlaying: true });
     }
 
     const addToPlaylist = async (video) => {

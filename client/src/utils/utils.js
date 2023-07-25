@@ -1,3 +1,5 @@
+import { createTimestamp } from "../db"
+
 export function toUsedVideoObject(video) {
     return {
         videoId: video.id.videoId,
@@ -46,3 +48,25 @@ export function getRoomPath() {
     const key = localStorage.getItem("room_key");
     return `rooms/${key}`
 }
+
+export function createTimeStamp() {
+    //return Date.now();
+    return createTimestamp();
+}
+
+export function calculateDiffBetweenTimestampAndNow(videoTimestamp) {
+    const now = Date.now();
+    console.log("now", now);
+    console.log("now in date", Date.now())
+    const diffInMiliSeconds = now - videoTimestamp;
+    const diffInSeconds = diffInMiliSeconds / 1000;
+    console.log("ms", diffInMiliSeconds)
+    console.log("sec", diffInSeconds)
+    //return diffInSeconds
+    const diff = diffInSeconds < 0 ? 0 : diffInSeconds;
+    console.log("diff", diff)
+    return diff;
+}
+
+//pc - 1690308729971
+//laptop - 1690308752658
