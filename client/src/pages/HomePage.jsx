@@ -24,10 +24,6 @@ export default function HomePage() {
 
         window.addEventListener('pausebackgroundtabs', preventPauseBackgroundTabs, true);
 
-        onDisconnect(ref(database, `${getRoomPath()}`)).update({
-            mainMessagingSenderId: ""
-        });
-
         disposer = onValue(ref(database, `${getRoomPath()}`), async (snapshot) => {
             const data = snapshot.val();
             if (!localStorage.getItem("room_key")) {
@@ -42,22 +38,6 @@ export default function HomePage() {
             }
         })
 
-        // onDisconnect(() => {
-        //     if (databaseData.mainMessagingSenderId === databaseMessengerId && databaseData) {
-        //         ref(database, `${getRoomPath()}/mainMessagingSenderId`).set("");
-        //     }
-        // })
-
-
-        // return () => {
-        //     // disposer();
-        //     //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
-        //     //ref(database, `${getRoomPath()}`).onDisconnect().update({ mainMessagingSenderId: "" });
-        //     //updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
-        //     disposer();
-        //     disposers();
-        //     console.log("remove field ")
-        // }
         return () => {
             disposer();
             setDatabaseData(null);
@@ -65,6 +45,12 @@ export default function HomePage() {
         }
 
     }, [])
+
+    useEffect(() => {
+        if (databaseData && databaseData?.mainMessagingSenderId === databaseMessengerId) {
+            onDisconnect(ref(database, `${getRoomPath()}`)).update({ mainMessagingSenderId: "" })
+        }
+    }, [databaseData?.mainMessagingSenderId])
 
 
 
