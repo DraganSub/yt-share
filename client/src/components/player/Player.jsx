@@ -19,8 +19,7 @@ export default function Player({ databaseData }) {
     }
 
     const handleSeek = async (seconds) => {
-        //&& databaseMessengerId === databaseData?.mainMessagingSenderId
-        if (!isTransitioning) {
+        if (!isTransitioning && databaseMessengerId === databaseData?.mainMessagingSenderId) {
             await updateData(`${getRoomPath()}`, { currentTime: seconds.playedSeconds });
         }
     }

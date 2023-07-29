@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { onValue, ref } from "firebase/database";
-import { database } from "../db";
+import { onValue, ref, onDisconnect } from "firebase/database";
+import { database, databaseMessengerId } from "../db";
 import { useNavigate } from "react-router-dom";
 import { getRoomPath } from "../utils";
 import { MobileTopMenu, Player, Playlist, SavedPlaylists, SearchSection } from "../components";
@@ -8,13 +8,15 @@ import "../styles/style.css";
 import { useSearch } from "../context/SearchContex";
 import TopMenu from "../components/common/TopMenu";
 import { usePlaylist } from "../context/PlaylistContext";
+import { updateData } from "../db";
 
+let disposer;
 export default function HomePage() {
     const [databaseData, setDatabaseData] = useState(null);
     const navigate = useNavigate();
 
-    const { isSearchActive, setIsSearchActive } = useSearch();
     const { isPlaylistActive } = usePlaylist();
+    const { isSearchActive, setIsSearchActive } = useSearch();
     useEffect(() => {
         const preventPauseBackgroundTabs = (event) => {
             event.stopImmediatePropagation();
@@ -22,16 +24,22 @@ export default function HomePage() {
 
         window.addEventListener('pausebackgroundtabs', preventPauseBackgroundTabs, true);
 
-        const disposer = onValue(ref(database, `${getRoomPath()}`), async (snapshot) => {
+        onDisconnect(ref(database, `${getRoomPath()}`)).update({
+            mainMessagingSenderId: ""
+        });
+
+        disposer = onValue(ref(database, `${getRoomPath()}`), async (snapshot) => {
             const data = snapshot.val();
+            if (!localStorage.getItem("room_key")) {
+                return;
+            }
             console.log(data);
-            // if ((data && !data.mainMessagingSenderId && localStorage.getItem("room_key")) || (data && data.mainMessagingSenderId === "" && localStorage.getItem("room_key"))) {
-            //     await updateData(`${getRoomPath()}`, { mainMessagingSenderId: databaseMessengerId })
-            //     disconnectListener();
-            //     setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
-            // } else {
-            setDatabaseData(data);
-            // }
+            if ((data && !data.mainMessagingSenderId && localStorage.getItem("room_key")) || (data && data.mainMessagingSenderId === "" && localStorage.getItem("room_key"))) {
+                await updateData(`${getRoomPath()}`, { mainMessagingSenderId: databaseMessengerId })
+                setDatabaseData({ ...data, mainMessagingSenderId: databaseMessengerId })
+            } else {
+                setDatabaseData(data);
+            }
         })
 
         // onDisconnect(() => {
@@ -51,8 +59,8 @@ export default function HomePage() {
         //     console.log("remove field ")
         // }
         return () => {
-            setDatabaseData(null);
             disposer();
+            setDatabaseData(null);
             localStorage.removeItem("room_key");
         }
 
@@ -81,10 +89,10 @@ export default function HomePage() {
     const navigateToLanding = async () => {
         //await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" })
         //localStorage.removeItem("room_key");
-        // disposer();
-        // if (databaseData?.mainMessagingSenderId === databaseMessengerId) {
-        //     await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
-        // }
+        disposer();
+        if (databaseData?.mainMessagingSenderId === databaseMessengerId) {
+            await updateData(`${getRoomPath()}`, { mainMessagingSenderId: "" });
+        }
         navigate("/");
     }
 
