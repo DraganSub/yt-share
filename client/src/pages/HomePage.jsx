@@ -1,15 +1,20 @@
-import { useEffect, useState, useRef } from "react";
-import { onValue, ref, onDisconnect, set, get, child } from "firebase/database";
-import { database, databaseMessengerId, updateData } from "../db";
+import { useEffect, useState } from "react";
+import { onValue, ref } from "firebase/database";
+import { database } from "../db";
 import { useNavigate } from "react-router-dom";
 import { getRoomPath } from "../utils";
-import { Player, Playlist, SavedPlaylists, SearchSection } from "../components";
+import { MobileTopMenu, Player, Playlist, SavedPlaylists, SearchSection } from "../components";
 import "../styles/style.css";
+import { useSearch } from "../context/SearchContex";
+import TopMenu from "../components/common/TopMenu";
+import { usePlaylist } from "../context/PlaylistContext";
 
 export default function HomePage() {
     const [databaseData, setDatabaseData] = useState(null);
     const navigate = useNavigate();
 
+    const { isSearchActive, setIsSearchActive } = useSearch();
+    const { isPlaylistActive } = usePlaylist();
     useEffect(() => {
         const preventPauseBackgroundTabs = (event) => {
             event.stopImmediatePropagation();
@@ -46,6 +51,7 @@ export default function HomePage() {
         //     console.log("remove field ")
         // }
         return () => {
+            setDatabaseData(null);
             disposer();
             localStorage.removeItem("room_key");
         }
@@ -83,22 +89,38 @@ export default function HomePage() {
     }
 
     return (
+
         <main className="pos-rel main">
-            <button onClick={navigateToLanding}>Back</button>
             <div className="play--container">
-                <div className="left">
-                    <Player databaseData={databaseData} />
+                <div className="top--menu-mobile">
+                    <MobileTopMenu databaseData={databaseData} navigate={navigateToLanding} />
                 </div>
-                <div className="right playlist">
-                    <Playlist databaseData={databaseData} />
+                <div className="top--menu">
+                    <TopMenu
+                        databaseData={databaseData} navigate={navigateToLanding}
+                    />
+                </div>
+                <div className="content--group">
+                    <div className="left">
+                        <Player databaseData={databaseData} />
+                    </div>
+                    <div className="right playlist">
+                        <Playlist databaseData={databaseData} />
+                    </div>
                 </div>
             </div>
-            <div className="pos-rel search--section">
-                <SearchSection />
-            </div>
-            <div className="saved-playlists--section">
-                <SavedPlaylists databaseData={databaseData} />
-            </div>
+
+            {
+                isPlaylistActive &&
+                <div className="pos-rel search--section"><SavedPlaylists databaseData={databaseData} /></div>
+            }
+
+            {
+                isSearchActive &&
+                <div className="pos-rel search--section search--menu-web">
+                    <SearchSection />
+                </div>
+            }
         </main>
     );
 }

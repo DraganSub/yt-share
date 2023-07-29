@@ -1,4 +1,10 @@
-export function SearchMenuIcon({ setIsSearchOpen }) {
+import { useSearch } from "../../context/SearchContex"
+
+export function SearchMenuIcon() {
+
+  const {
+    setIsSearchActive
+  } = useSearch();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,9 +12,9 @@ export function SearchMenuIcon({ setIsSearchOpen }) {
       viewBox="0 0 24 24"
       stroke-width="3"
       stroke="white"
-      class="w-6 h-6 search--section"
+      class="w-6 h-6 "
       style={{ width: "30px", height: "30px", background: "transparent", cursor: "pointer" }}
-      onClick={() => { setIsSearchOpen(true) }}
+      onClick={() => { setIsSearchActive(true) }}
     >
       <path
         stroke-linecap="round"

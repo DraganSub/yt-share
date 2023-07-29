@@ -1,5 +1,5 @@
-import { BrowserRouter } from "react-router-dom";
 import { MainLayout } from "./layouts";
+import { BrowserRouter } from "react-router-dom";
 import "./styles/style.css";
 
 function App() {

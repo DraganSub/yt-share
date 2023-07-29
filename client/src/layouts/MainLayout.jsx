@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, Route, Routes } from "react-router-dom";
+import { PlaylistWrapper } from "../context/PlaylistContext";
+import { SearchWrapper } from "../context/SearchContex";
 import { LandingPage, HomePage } from "../pages";
 
 export default function MainLayout() {
@@ -28,6 +30,12 @@ export default function MainLayout() {
 
     return <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/:room_id" element={<HomePage />} />
+        <Route path="/:room_id" element={
+            <PlaylistWrapper>
+                <SearchWrapper>
+                    <HomePage />
+                </SearchWrapper>
+            </PlaylistWrapper>
+        } />
     </Routes>
 }

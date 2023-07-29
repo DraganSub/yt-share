@@ -1,11 +1,11 @@
-export function SearchMusicListIcon({ activeTab }) {
+export function SearchMusicListIcon({ activeTab, setIsOpen }) {
   return (
     <svg
       fill={`${activeTab === 1 ? "red" : "white "}`}
       viewBox="0 0 16 16"
       height="2em"
-      width="
-            2em"
+      width="2em"
+      onClick={() => setIsOpen && setIsOpen(true)}
     >
       <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2z" />
       <path fillRule="evenodd" d="M12 3v10h-1V3h1z" />

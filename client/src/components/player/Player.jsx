@@ -147,8 +147,10 @@ export default function Player({ databaseData }) {
                 onError={handleEnd}
                 onReady={handleStart}
                 muted={isMuted}
-                width={1100}
-                height={665}
+                width={"inherit"}
+                height={"inherit"}
+                /*   width={1100}
+                  height={665} */
                 volume={volume}
                 config={{
                     youtube: {

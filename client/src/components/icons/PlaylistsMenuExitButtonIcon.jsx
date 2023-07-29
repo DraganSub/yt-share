@@ -1,17 +1,15 @@
-import { useSearch } from "../../context/SearchContex"
+import { usePlaylist } from "../../context/PlaylistContext"
 
-export function SearchMenuExitButtonIcon() {
-  const {
-    setIsSearchActive
-  } = useSearch();
+export function PlaylistsMenuExitButtonIcon() {
 
+  const { setIsPlaylistActive } = usePlaylist();
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none" viewBox="0 0 24 24"
       stroke-width="3"
       stroke="currentColor"
-      onClick={() => { setIsSearchActive(false) }}
+      onClick={() => { setIsPlaylistActive(false) }}
       class="w-6 h-6 exit-search"
     >
       <path

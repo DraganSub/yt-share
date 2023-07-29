@@ -17,6 +17,7 @@ export default function LandingPage() {
             }
         });
         return () => {
+            setAvailableRooms(null);
             dispose();
         }
     }, [])

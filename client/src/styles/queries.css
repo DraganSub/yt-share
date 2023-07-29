@@ -1,0 +1,425 @@
+@media screen and (max-width: 1000px) {
+  .left {
+    padding: 0px !important;
+    flex-basis: unset !important;
+    height: unset !important;
+  }
+
+  .top--menu-mobile {
+    display: flex !important;
+    z-index: 100000;
+  }
+
+  .player {
+    width: 100vw;
+    height: clamp(150px, 35vh, 200px) !important;
+  }
+
+  .play--container {
+    display: flex !important;
+    flex-direction: column;
+    /* height: 100vh; */
+    overflow: hidden !important;
+  }
+
+  .content--group {
+    display: unset !important;
+    grid-area: unset !important;
+    grid-template-columns: unset !important;
+    height: calc(100vh - 70px) !important;
+  }
+
+  .playlist--bottom .play-hov:last-child {
+    padding-bottom: 0px !important;
+  }
+
+  .video-controls-container {
+    width: 40vw;
+  }
+
+  .play-btn svg {
+    position: relative;
+    top: 20%;
+    width: 25px;
+    left: 5px;
+    background-color: transparent;
+    border: none;
+  }
+
+  .mute-btn svg {
+    position: relative;
+    top: 20%;
+    width: 25px;
+    left: 5px;
+    background-color: transparent;
+    border: none;
+  }
+
+  .search--bottom {
+    max-height: calc(100vh - 70px - 20px) !important;
+  }
+
+  #music-slider {
+    width: 50vw;
+  }
+
+  .slider {
+    width: 150px !important;
+    left: 170px !important;
+  }
+
+  .lay,
+  .card--img {
+    width: 150px !important;
+  }
+  .pos-txt-top {
+    top: -20px !important;
+  }
+
+  .playlist-video-txt {
+    position: relative !important;
+    left: 0 !important;
+    /*    top: -25px !important; */
+  }
+
+  .videoResultCard {
+    gap: 10px !important;
+  }
+
+  .playlist--list {
+    border: none !important;
+    margin-top: 0px !important;
+    margin-right: 0px !important;
+    max-height: 660px !important ;
+    border-radius: 0px !important;
+  }
+
+  .playlist--container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0px !important;
+  }
+
+  .playlist--title-container {
+    width: 100%;
+    background: #050311 !important;
+    border-radius: 0px !important;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: rgba(52, 110, 168, 0.3) 10px 14px 34px !important;
+    z-index: 100;
+  }
+
+  .playlist--title {
+    display: flex;
+    align-items: center;
+    background: transparent;
+  }
+
+  .current-title {
+    background: transparent;
+    font-size: 15px !important;
+    height: 100%;
+    align-items: center;
+    padding-left: 5px !important;
+    letter-spacing: 0.6px;
+  }
+
+  .playlist--togler {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    background: transparent;
+    top: 30%;
+    position: relative;
+  }
+
+  .toggle-label {
+    height: 25px !important;
+    width: 50px !important;
+  }
+
+  .toggle-label:before {
+    content: "";
+    position: absolute;
+    top: 0px !important;
+    left: 2px !important;
+    width: 25px !important;
+    height: 25px !important;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    /* display: none; */
+  }
+
+  .toggle-input:checked + .toggle-label:before {
+    transform: translateX(23px) !important;
+  }
+
+  /* TOP MENU STYLING */
+
+  .mob--playlists-container {
+    width: 100vw;
+    background: transparent !important;
+    z-index: 100000;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+
+  .saved-playlists--section {
+    height: 100vh !important;
+    width: 100vw !important;
+    max-height: 100% !important;
+    position: fixed !important;
+    z-index: 9999;
+    overflow-y: auto;
+  }
+
+  .card__action {
+    transform: unset !important;
+    bottom: 75px !important;
+    width: 35px;
+    height: 35px;
+  }
+
+  .card__action svg {
+    box-shadow: rgba(15, 154, 189, 0.25) 0px 54px 55px,
+      rgba(29, 219, 210, 0.12) 0px -12px 30px,
+      rgba(11, 151, 216, 0.12) 0px 4px 6px,
+      rgba(41, 69, 197, 0.17) 0px 12px 13px,
+      rgba(194, 44, 44, 0.09) 0px -3px 5px;
+  }
+
+  .card__action > svg {
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .card__action--delete {
+    bottom: 300px !important;
+
+    transform: unset !important;
+    left: 1rem !important;
+    width: 35px !important;
+    height: 35px !important;
+  }
+
+  .card__footer {
+    height: 27.5% !important;
+  }
+
+  .card__action--delete .remove--saved-playlist svg {
+    width: 33px !important;
+    height: 33px !important;
+  }
+
+  .playlists--header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    text-align: center;
+    align-items: center;
+    padding-top: 20px;
+    gap: 10px;
+  }
+
+  .playlists--overflow {
+    height: calc(100vh - 78.23px) !important;
+  }
+
+  .saved-playlists--container {
+    max-height: unset !important;
+    display: grid !important;
+    margin-top: 70px !important;
+  }
+
+  .playlists--exit-btn > svg {
+    position: unset;
+  }
+
+  .playlist--card:last-child {
+    padding-bottom: 10px !important;
+  }
+
+  .playlists--logo {
+    width: 100px;
+    padding-left: 10px;
+  }
+
+  .playlists--title {
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
+  .saved-playlists--container .card:first-child {
+    margin-top: 40px;
+  }
+
+  .card {
+    width: 90vw !important;
+    max-width: 100% !important;
+    margin: auto;
+  }
+  /* playlists--overflow */
+
+  .playlist--card {
+    height: 150px !important;
+    width: clamp(150px, 100%, 400px) !important;
+  }
+
+  .saved--playlist-wave {
+    top: 185px !important;
+  }
+
+  .playlist--bottom {
+    max-height: unset !important;
+    flex-basis: calc(100vh - 350px) !important;
+  }
+
+  /*  .search--menu-web{
+    display: none !important;
+  } */
+
+  .mobile--top-menu {
+    height: 70px;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    position: relative;
+  }
+  .search--menu {
+    z-index: 100;
+    font-size: 10px;
+    padding: 5px 10px 0px 0px;
+  }
+
+  .midd--loc-logo {
+    height: 100%;
+    align-items: center !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  .right--menu {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .custom--lists {
+    font-size: 12px;
+  }
+
+  .top-menu__logo {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+  }
+
+  .pl-video--card img {
+    width: clamp(90px, 100%, 200px) !important;
+  }
+
+  .pl--card__title {
+    font-size: clamp(0.75rem, 0.4423rem + 1.5385vw, 0.875rem) !important;
+    width: clamp(100px, 80%, 200px) !important;
+  }
+
+  .video-playlist__card {
+    padding: 0 5px !important;
+  }
+
+  .pl--remove-from-playlist {
+    right: 10px !important;
+  }
+
+  .pl--remove-from-playlist svg {
+    width: 20px !important;
+  }
+
+  .pl--card__title {
+    word-break: break-all !important;
+  }
+
+  .pl-video--card {
+    flex-basis: clamp(100px, 40%, 140px);
+  }
+
+  .playlist-video-txt {
+    flex-basis: clamp(120px, 80%, 300px);
+    margin-top: 28px;
+  }
+
+  .search--section-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    position: relative !important;
+    border: none !important;
+  }
+
+  .search--section {
+    right: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    z-index: 1000000;
+  }
+
+  .search--form {
+    width: clamp(160px, 55%, 300px) !important;
+  }
+
+  .top--menu {
+    display: none;
+  }
+
+  .search__section--head-title {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 500px) {
+  .search--form {
+    width: clamp(160px, 70%, 400px) !important;
+  }
+
+  .playlists--overflow {
+    max-height: 400px;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .content--group {
+    display: grid;
+    grid-area: b;
+    grid-template-columns: 66% 34% !important;
+    height: calc(100vh - 100px);
+  }
+}
+
+@media screen and (max-width: 1350px) {
+  .content--group {
+    display: grid;
+    grid-area: b;
+    grid-template-columns: 63% 37% !important;
+    height: calc(100vh - 100px);
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .content--group {
+    display: grid;
+    grid-area: b;
+    grid-template-columns: 56% 44% !important;
+    height: calc(100vh - 100px);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .playlist--card {
+    width: 80% !important;
+  }
+}

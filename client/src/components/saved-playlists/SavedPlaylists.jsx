@@ -2,6 +2,8 @@ import React from "react";
 import { removeData, updateData, pushData } from "../../db";
 import { playlistVideoToUsedVideoObject, getRoomPath } from "../../utils";
 import { MusicWave } from "../common";
+import { BroadcastPlaylistIcon } from "../icons/BroadcastingPlaylistIcon";
+import { PlaylistsMenuExitButtonIcon } from "../icons/PlaylistsMenuExitButtonIcon";
 import { SavedPlaylistPlayButtonIcon } from "../icons/SavedPlaylistPlayButtonIcon";
 import { SavedPlaylistRemoveButtonIcon } from "../icons/SavedPlaylistRemoveButtonIcon";
 
@@ -14,7 +16,12 @@ export default function SavedPlaylists({ databaseData }) {
         return <div>No playlists saved</div>
     }
 
-    return <div className="saved-playlists--container playlists--overflow">
+    return <div className="search--section-container playlist__wrapp">
+        <PlaylistsMenuExitButtonIcon />
+        <div className="search__section--head">
+            <BroadcastPlaylistIcon />
+            <h1 className="search__section--head-title">Your playlists</h1>
+        </div>
         {Object.values(databaseData.playListList).map(playlist =>
             <PlaylistItem key={playlist.playlistId} playlistItem={playlist} allPlaylists={databaseData.playListList} />
         )}
@@ -93,7 +100,7 @@ function PlaylistItem({ playlistItem, allPlaylists }) {
     }
 
     return <>
-        <div class="card">
+        <div class="card playlist--card">
             <img src={playlistItem.playlistImg} alt={playlistItem.playlistImg} class="card__img" />
             <span class="card__footer">
                 <span className="saved-playlists--title">{playlistItem.playListTitle}</span>

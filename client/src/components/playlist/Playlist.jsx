@@ -1,24 +1,29 @@
 import { useState, useEffect } from "react";
 import { updateData } from "../../db";
-import { AddPlaylistAccordion, PlaylistList } from ".";
+import { PlaylistList } from ".";
+import { BroadcastPlaylistIcon } from "../icons/BroadcastingPlaylistIcon";
 import { getRoomPath } from "../../utils";
 
 export default function Playlist({ databaseData }) {
     return <>
         <div className="flex flex-cl playlist--container">
-            {/*   <div class="carousel">
-                <CurrentPlayingSong data={databaseData} />
-            </div> */}
             <div className="playlist--list">
                 <div className="playlist--container">
                     <div className="pos-rel playlist--title-container playlist--top">
-                        <p className="current-title">Your current playlist:
+                        <div className="playlist--title">
+                            <BroadcastPlaylistIcon />
+                            <p className="current-title">Your current playlist:
                             <br />
-                        </p>
-                        {databaseData && <PlaylistToggler databaseData={databaseData} />}
-                        <div className="add--accordion-section">
-                            <AddPlaylistAccordion />
+                            </p>
                         </div>
+                        {databaseData &&
+                            <div className="playlist--togler" >
+                                <PlaylistToggler databaseData={databaseData} />
+                            </div>
+                        }
+                        {/*  <div className="add--accordion-section">
+                            <AddPlaylistAccordion />
+                        </div> */}
                     </div>
                     <PlaylistList
                         databaseData={databaseData}

@@ -5,16 +5,20 @@ import { SearchMenuIcon } from "../icons/SearchMenuIcon";
 import { SearchMenuExitButtonIcon } from "../icons/SearchMenuExitButtonIcon";
 import { SearchMusicListItem } from "../icons/SearchMusicListItem";
 import { SearchMusicListIcon } from "../icons/SearchMusicListIcon";
+import { useSearch } from "../../context/SearchContex";
 
 export default function SearchSection() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const {
+    isSearchActive,
+    setIsSearchActive
+  } = useSearch();
 
-  if (!isSearchOpen) {
-    return <SearchMenuIcon setIsSearchOpen={setIsSearchOpen} />
+  if (!isSearchActive) {
+    return <SearchMenuIcon setIsSearchActive={setIsSearchActive} />
   }
 
   return <div className="search--section-container">
-    <SearchMenuExitButtonIcon setIsSearchOpen={setIsSearchOpen} />
+    <SearchMenuExitButtonIcon setIsSearchActive={setIsSearchActive} />
     <SearchContainer />
   </div>
 }
