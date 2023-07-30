@@ -104,7 +104,7 @@
 
   .playlist--title-container {
     width: 100%;
-    background: #050311 !important;
+    background: #000000 !important;
     border-radius: 0px !important;
     display: flex;
     justify-content: space-between;
@@ -330,6 +330,7 @@
 
   .video-playlist__card {
     padding: 0 5px !important;
+    height: 100px !important;
   }
 
   .pl--remove-from-playlist {
@@ -345,7 +346,7 @@
   }
 
   .pl-video--card {
-    flex-basis: clamp(100px, 40%, 140px);
+    flex-basis: clamp(100px, 70%, 200px);
   }
 
   .playlist-video-txt {
@@ -421,5 +422,75 @@
 @media screen and (max-width: 500px) {
   .playlist--card {
     width: 80% !important;
+  }
+}
+
+/* Queries for making main content responsive */
+
+@media screen and (min-width: 1800px) {
+  .content--group {
+    grid-template-columns: 74% 26% !important;
+  }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1799px) {
+  .content--group {
+    grid-template-columns: 72% 28% !important;
+  }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1599px) {
+  .content--group {
+    grid-template-columns: 68% 32% !important;
+  }
+}
+
+@media screen and (min-width: 450px) and (max-width: 600px) {
+  .pl-video--card {
+    flex-basis: clamp(100px, 70%, 200px);
+  }
+
+  .video-playlist__card {
+    height: 130px !important;
+  }
+
+  .pl--card__img {
+    height: 100px !important;
+  }
+
+  .playlist-video-txt {
+    flex-basis: clamp(140px, 80%, 350px) !important;
+  }
+
+  .pl--card__title {
+    width: clamp(150px, 80%, 250px) !important;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 1000px) {
+  .pl-video--card {
+    flex-basis: clamp(100px, 70%, 200px);
+  }
+
+  .video-playlist__card {
+    height: 160px !important;
+  }
+
+  .pl--card__video-img,
+  .pl--card__img {
+    height: 130px !important;
+  }
+
+  .playlist-video-txt {
+    flex-basis: clamp(180px, 80%, 400px) !important;
+  }
+
+  .pl--card__title {
+    width: clamp(200px, 80%, 300px) !important;
+    font-size: 16px !important;
+  }
+
+  .playlist-video-txt {
+    top: -15px !important;
   }
 }
