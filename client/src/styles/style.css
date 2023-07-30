@@ -414,7 +414,7 @@ button {
 
 .playlist--title-container {
   width: 100%;
-  background: #212121;
+  background: #0f0f0f;
   border-radius: 20px 20px 0px 0px;
   display: flex;
   justify-content: space-around;
@@ -435,6 +435,11 @@ button {
   padding: 20px 20px;
 }
 
+.playlist--togler {
+  top: 7px;
+  position: relative;
+}
+
 .playlist--bottom {
   max-height: 600px;
   overflow-y: auto;
@@ -446,7 +451,7 @@ button {
 }
 
 .playlist--bottom .play-hov:last-child {
-  padding-bottom: 40px;
+  padding-bottom: 0px;
 }
 
 .search--bottom {
@@ -482,6 +487,7 @@ button {
   font-size: 14px;
   width: 200px;
   text-overflow: ellipsis;
+  text-transform: uppercase;
   padding-left: 7px;
   font-weight: 500;
 }
@@ -577,7 +583,7 @@ button {
 .pl-is-active .my-mix-sub,
 .pl-is-active .playlist-video-txt,
 .pl-is-active .my-mix-sub-t {
-  background: #3b3c3c;
+  background: #061519;
   cursor: pointer;
 }
 
