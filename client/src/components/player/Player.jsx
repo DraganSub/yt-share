@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import ReactPlayer from 'react-player'
-import { databaseMessengerId, updateData, removeData, pushData } from "../../db";
+import { get, onValue, ref, once } from "firebase/database";
+import { databaseMessengerId, updateData, removeData, pushData, database } from "../../db";
 import { VolumeSlider } from ".";
 import { playlistVideoToUsedVideoObject, getRoomPath, createTimeStamp, calculateDiffBetweenTimestampAndNow } from "../../utils";
 import VolumeControls from "./VideoControls";
@@ -12,7 +13,24 @@ export default function Player({ databaseData }) {
     const player = useRef(null);
     const [isMuted, setIsMuted] = useState(true);
     const [volume, setVolume] = useState(0);
+    const [serverTimeStamp, setServerTimeStamp] = useState();
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [videoSeconds, setVideoSeconds] = useState();
+
+    // useEffect(() => {
+    //     const offsetRef = ref(database, ".info/serverTimeOffset");
+    //     const disposer = onValue(offsetRef, (snap) => {
+    //         const offset = snap.val();
+    //         const estimatedServerTimeMs = new Date().getTime() + offset;
+    //         //setServerTimeStamp(estimatedServerTimeMs);
+    //         console.log(estimatedServerTimeMs)
+    //     })
+    //     if (databaseData?.videoTimeStamp) {
+    //         console.log('calculated diff seconds', calculateDiffBetweenTimestampAndNow(databaseData.videoTimeStamp, serverTimeStamp))
+    //         console.log("video stamp", databaseData.videoTimeStamp)
+    //         console.log("server time stamp", serverTimeStamp);
+    //     }
+    // }, [databaseData])
 
     if (databaseData == null) {
         return <div>No video queried yet</div>;
@@ -121,9 +139,64 @@ export default function Player({ databaseData }) {
         updateData(`${getRoomPath()}`, { specificVideo: videoId, videoTimeStamp: createTimeStamp(), isPlaying: true });
     }
 
-    const handleStart = () => {
-        const timeinseconds = calculateDiffBetweenTimestampAndNow(databaseData.videoTimeStamp)
-        player.current.seekTo(timeinseconds);
+    const handleStart = async () => {
+
+        let serverTime;
+        const offsetRef = ref(database, ".info/serverTimeOffset");
+        onValue(offsetRef, (snap) => {
+            const offset = snap.val();
+            const estimatedServerTimeMs = new Date().getTime() + offset;
+            serverTime = estimatedServerTimeMs
+            console.log(estimatedServerTimeMs)
+        }, {
+            onlyOnce: true
+        })
+        console.log(player.current)
+
+        const timeinseconds = calculateDiffBetweenTimestampAndNow(databaseData.videoTimeStamp, serverTime)
+        const videoLength = player.current.getDuration()
+        const secondsInFractions = timeinseconds / videoLength;
+        console.log('calculated diff seconds', timeinseconds)
+        console.log("video stamp", databaseData.videoTimeStamp)
+        console.log("server time stamp", serverTime);
+        console.log("fraction", secondsInFractions);
+        console.log("loaded seconds", player.current.getSecondsLoaded(), "vs currentseconds", timeinseconds)
+
+        player.current.seekTo(secondsInFractions);
+
+        // if (player.current.getSecondsLoaded() > timeinseconds) {
+        //     console.log("seeking")
+        //     player.current.seekTo(secondsInFractions);
+        //     return;
+        // } else if (player.current.getSecondsLoaded() < timeinseconds) {
+        //     // player.current.seekTo(secondsInFractions)
+        //     // console.log("seek to load more video")
+        //     // handleStart();
+        // }
+        // console.log(player.current.player.isLoading)
+
+
+        // console.log(player.current)
+        // let serverTime;
+        // const offsetRef = ref(database, ".info/serverTimeOffset");
+        // onValue(offsetRef, (snap) => {
+        //     const offset = snap.val();
+        //     const estimatedServerTimeMs = new Date().getTime() + offset;
+        //     serverTime = estimatedServerTimeMs
+        //     console.log(estimatedServerTimeMs)
+        // }, {
+        //     onlyOnce: true
+        // })
+
+        // const timeinseconds = calculateDiffBetweenTimestampAndNow(databaseData.videoTimeStamp, serverTime)
+        // const videoLength = player.current.getDuration()
+        // const secondsInFractions = timeinseconds / videoLength;
+        // console.log('calculated diff seconds', timeinseconds)
+        // console.log("video stamp", databaseData.videoTimeStamp)
+        // console.log("server time stamp", serverTime);
+        // console.log("fraction", secondsInFractions);
+        // player.current.seekTo(secondsInFractions);
+        // console.log("seeked to");
     }
 
     const onPause = async () => {

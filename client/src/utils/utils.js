@@ -1,5 +1,5 @@
 import { createTimestamp } from "../db"
-
+import { serverTimestamp } from "firebase/database"
 export function toUsedVideoObject(video) {
     return {
         videoId: video.id.videoId,
@@ -54,8 +54,8 @@ export function createTimeStamp() {
     return createTimestamp();
 }
 
-export function calculateDiffBetweenTimestampAndNow(videoTimestamp) {
-    const now = Date.now();
+export function calculateDiffBetweenTimestampAndNow(videoTimestamp, serverTimestamp) {
+    const now = serverTimestamp;
     console.log("now", now);
     console.log("now in date", Date.now())
     const diffInMiliSeconds = now - videoTimestamp;
@@ -68,5 +68,15 @@ export function calculateDiffBetweenTimestampAndNow(videoTimestamp) {
     return diff;
 }
 
+async function getCurrentTimestamp() {
+    const response = await fetch("http://worldtimeapi.org/api/timezone/Europe/Zagreb", {
+        method: "GET",
+        headers: {
+            accept: 'application/json'
+        }
+    });
+    const responseToObj = await response.json();
+    return new Date(responseToObj.utc_datetime).getTime();
+}
 //pc - 1690308729971
 //laptop - 1690308752658
