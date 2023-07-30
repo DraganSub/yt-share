@@ -122,9 +122,6 @@ export default function Player({ databaseData }) {
 
     const handleStart = () => {
         player.current.seekTo(databaseData.currentTime);
-        setIsMuted(false)
-        setVolume(0.3)
-
     }
 
     const onPause = async () => {
